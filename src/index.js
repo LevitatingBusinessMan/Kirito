@@ -6,37 +6,64 @@ class Kirito extends Discord.Client {
         super();
         const path = require('path');
         const fs = require('fs');
-        const chalk = require('chalk');
 
-        this.config = require('../config/config.js');
-        this.prompt = new (require('./util/prompt.js'))("Kirito");
-        this.logger = new (require('./util/logging.js'))(path.join(__dirname, '../log'));
+        (async () => {
+            this.config = require('../config/config.js');
+            
+            if (this.config.log)
+            this.logger = new (require('./util/logging.js'))(path.join(__dirname, '../log'));
+            this.log = this.logger.log;
 
-        //Prompt Commands
-        fs.readdirSync(path.join(__dirname, './promptCommands')).forEach(cmdFile =>
-            this.prompt.addCommand(require('./promptCommands/' + cmdFile))
-        );
+            //Process events
+            process.on('exit', code => 
+                this.logger.log('err', `Process exited with code ${code}`)    
+            );
+            process.on('unhandledRejection', (reason, place) =>
+                this.logger.log('err', `Unhandled rejection at: ${place}, reason: ${reason}`)
+            );
 
-        //Process events
-        process.on('exit', code => 
-            this.logger.log('err', `Process exited with code ${code}`)    
-        );
-        process.on('unhandledRejection', (reason, place) =>
-            this.logger.log('err', `Unhandled rejection at: ${place}, reason: ${reason}`)
-        );
+            this.loadCommands();
+            this.loadEvents();
 
-        let spinner = new (require("./util/spinner.js"))("Loggin in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
-        this.login(this.config.token);
-        this.on('ready', () => spinner.stop());
+            this.setInterval(() => {let test = 0;},100)
 
+            //Logging in
+            let spinner = new (require("./util/spinner.js"))("Loggin in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
+            this.on('ready', () => spinner.stop());
+            await this.login(this.config.token);
 
-        //After whole setup
-        this.prompt.openNew();
+            //After whole setup
 
-        //this.logger.log('ok', 'test')
+            //this.logger.log('ok', 'test')
+
+        })();
     }
     loadCommands(){
+        const fs = require('fs');
+        const path = require('path');
 
+        fs.readdirSync(path.join(__dirname, './commands')).forEach(category =>
+            fs.readdirSync(path.join(__dirname, './commands', category)).forEach(file => {
+                try {
+                    var command = new (require(path.join(__dirname, './commands', category, file)))();
+                } catch(e) {
+                    this.logger.log('err', `Error loading command ${file}`)
+                    return;
+                }
+
+                command.help.category = category;
+                command.name = command.constructor.name.toLowerCase();
+
+                if (!this.commands)
+                    this.commands = {};
+                
+                this.commands[command.name] = command;
+                
+                command.conf.aliases.forEach(alias => {
+                    this.commandAliases = this.commands[command.name];
+                });
+            })
+        );
     }
     loadEvents(){
 
