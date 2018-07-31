@@ -9,21 +9,14 @@ class Logger {
         this.log_ = "";
         this.logFile = dayjs().format("(D-M-D) HH[h]-mm[m]-ss[s]") + ".txt";
 
-        console.log = (d) => {
-            process.stdout.clearLine();
-            process.stdout.write(d + "\n");
-        
-            this.log_ += d + "\n";
-
-            if (logDirectory) {
-                if (!fs.existsSync(logDirectory))
-                    fs.mkdirSync(logDirectory);
-                // "/\[\d*m/g" replaces chalk colors
-                // eslint-disable-next-line no-control-regex
-                fs.writeFileSync(path.join(logDirectory, this.logFile), this.log_.replace(/\[\d*m/g, ""));
-            }
-        };
-        console.error = console.log;
+        if (logDirectory) {
+            if (!fs.existsSync(logDirectory))
+                fs.mkdirSync(logDirectory);
+            this.writeStream = fs.createWriteStream(path.join(logDirectory, this.logFile), {flag: "a"})
+            process.stdout.pipe(this.writeStream);
+            //process.stderr.pipe(this.writeStream);
+            console.log('test')
+        }
     }
     //Logging messages to console
     log(type, msg) {

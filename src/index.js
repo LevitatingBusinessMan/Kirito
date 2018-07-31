@@ -29,8 +29,9 @@ class Kirito extends Discord.Client {
         this.login(this.config.token);
         this.on('ready', () => spinner.stop());
 
+
         //After whole setup
-        //this.prompt.openNew();
+        this.prompt.openNew();
 
         //this.logger.log('ok', 'test')
     }
