@@ -6,15 +6,12 @@ class Kirito extends Discord.Client {
         super();
         const path = require('path');
         const fs = require('fs');
-        const r = require('rethinkdb');
-        
+
         require(path.join(__dirname, "./util/prototypes"));
 
         (async () => {
             this.config = require('../config/config.js');
             
-            await require(path.join(__dirname, "./util/RethinkDBInstaller"));
-
             if (this.config.log)
             this.logger = new (require('./util/logger.js'))(path.join(__dirname, '../log'));
             this.log = this.logger.log;
