@@ -10,7 +10,8 @@ class Ping {
             "perms": [],
             "guildOnly": false,
             "ownerOnly": false,
-            "expectedArgs": false
+            "expectedArgs": false,
+            "requires": []
         }
     }
     async run(client, args, message, prefix, send) {
