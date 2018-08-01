@@ -30,13 +30,13 @@ class Logger {
         let stamp = `${type} ${time}`;
         switch (type) {
         case "OK":
-            stamp = chalk.green(`${type} ${time}`);
+            stamp = green(`${type} ${time}`);
             break;
         case "WARN":
-            stamp = chalk.yellow(`${type} ${time}`);
+            stamp = yellow(`${type} ${time}`);
             break;
         case "ERR":
-            stamp = chalk.red(`${type} ${time}`);
+            stamp = red(`${type} ${time}`);
         }
 
         console.log(`[${stamp}] ${msg}`);       

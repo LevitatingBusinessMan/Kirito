@@ -25,7 +25,7 @@ class Kirito extends Discord.Client {
             this.loadCommands();
             this.loadEvents();
 
-            this.setInterval(() => {let test = 0;},100)
+            this.setInterval(() => {1+1}, 100)
 
             //Logging in
             let spinner = new (require("./util/spinner.js"))("Loggin in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
@@ -34,10 +34,9 @@ class Kirito extends Discord.Client {
 
             //After whole setup
 
-            //this.logger.log('ok', 'test')
-
         })();
     }
+
     loadCommands(){
         const fs = require('fs');
         const path = require('path');
@@ -65,8 +64,20 @@ class Kirito extends Discord.Client {
             })
         );
     }
-    loadEvents(){
 
+    loadEvents() {
+        const fs = require('fs');
+        const path = require('path');
+
+        fs.readdirSync(path.join(__dirname, './events')).forEach(file => {
+            try {
+                let event = require(path.join(__dirname, './events', file));
+                this.on(event.name, (...args) => event(this, args));
+            } catch(e) {
+                this.logger.log('err', `Error loading event ${file}`)
+                return;
+            }
+        });
     }
 }
 
