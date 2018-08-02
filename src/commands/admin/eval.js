@@ -17,8 +17,9 @@ class Eval {
     async run(Kirito, args, message, alias, prefix, chn) {
         let toEval = args.join(' ');
         try {
-            let output = args.includes('await') ? await eval(toEval) : eval(toEval);
-            chn.send(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${output}\`\`\``);
+            const {inspect} = require('util');
+            let output = await eval(`(async () => {return ${toEval}})()`);
+            chn.send(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${inspect(output).substr(0,1800)}\`\`\``);
         } catch(e) {
             chn.send(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${e.message}\`\`\``);
         }

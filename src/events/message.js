@@ -87,8 +87,10 @@ module.exports = async function message (Kirito, [message]) {
                 Kirito.log('err', e.stack);
                 message.channel.send(errorMessage);
             }
+
+        //Command not recognized
         } else {
-            //Edit messages stuff
+            Kirito.editMessages.set(message.id, message);
         }
     }
 }

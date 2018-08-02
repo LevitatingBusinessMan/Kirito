@@ -23,6 +23,7 @@ class Kirito extends Discord.Client {
             );
 
             this.loadUtilities();
+            this.editMessages = new Map();
 
             const spinner = require(path.join(__dirname, "./util/spinner.js"));
 
@@ -72,7 +73,7 @@ class Kirito extends Discord.Client {
                     return;
                 }
 
-                command.help.category = category;
+                command.category = category;
                 command.name = command.constructor.name.toLowerCase();
 
                 if (!this.commands)

@@ -1,4 +1,5 @@
-module.exports = function (command, prefix) {
+    module.exports = function (command, prefix) {
+    //Specific command
     if (command){
         if (typeof command === "string")
             command = this.commands[command] || this.commandAliases[command];
@@ -12,6 +13,9 @@ module.exports = function (command, prefix) {
         
         if (command.conf.ownerOnly)
             embed.setTitle(command.name.capitalize() + " [Owner only]")
+        
+        if (command.category == 'admin')
+            embed.setTitle(command.name.capitalize() + " [Admin only]")
 
         let footer = "";
 
@@ -21,13 +25,34 @@ module.exports = function (command, prefix) {
         if (command.conf.aliases.length)
             footer += (`[Aliases: ${command.conf.aliases.join(', ')}]`);
 
-        console.log(footer);
         embed.setFooter(footer);
-        
-        console.log(embed);
+        console.log(embed)
         return embed;
     }
+    //All commands
     else {
+        let categories = {};
+        for (var command in this.commands) {
+            let category = this.commands[command].category.capitalize();
+            if (category != 'admin') {
+                if (!categories[category])
+                    categories[category] = [];
+                categories[category].push(command);
+            }
+        }
 
+        let embed = new this.Discord.RichEmbed()
+        .setTitle(this.user.username)
+        .setThumbnail(this.user.avatarURL);
+        for (var category in categories){
+            embed.addField(category, categories[category].join(', '));
+        }
+        
+        embed.withoutAdmin = function() {
+            this.fields = this.fields.filter(field => field.name !== "Admin");
+            return this;
+        }
+
+        return embed;
     }
 }
