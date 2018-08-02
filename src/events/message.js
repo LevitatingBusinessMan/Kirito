@@ -12,9 +12,9 @@ module.exports = async function message (Kirito, [message]) {
 
         let args;
         if (message.content.startsWith(prefix))
-            args = message.content.substr(prefix.length).trim().split(/\s/g);
+            args = message.content.substr(prefix.length).trim().split(/\s/g).map(x => x.trim());
         if (message.content.startsWith(`<@${Kirito.user.id}>`))
-            args = message.content.substr(`<@${Kirito.user.id}>`.length).trim().split(/\s/g);
+            args = message.content.substr(`<@${Kirito.user.id}>`.length).trim().split(/\s/g).map(x => x.trim());
         
         let commandName = args.shift().toLowerCase();
         if (Kirito.commands[commandName] || Kirito.commandAliases[commandName]) {

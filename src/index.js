@@ -131,7 +131,9 @@ class Kirito extends Discord.Client {
     }
 
     loadUtilities(){
-        this.renderHelp = require(path.join(__dirname, "./util/renderHelp.js")); 
+        this.renderHelp = require(path.join(__dirname, "./util/renderHelp.js"));
+        this.getImage = require(path.join(__dirname, "./util/getImage.js"));
+        this.getUser = require(path.join(__dirname, "./util/getUser.js"));
     }
 }
 

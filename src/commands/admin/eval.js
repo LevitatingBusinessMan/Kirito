@@ -19,7 +19,7 @@ class Eval {
         try {
             const {inspect} = require('util');
             let output = await eval(`(async () => {return ${toEval}})()`);
-            chn.send(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${inspect(output).substr(0,1800)}\`\`\``);
+            chn.send(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${inspect(output).substr(0,1900)}\`\`\``);
         } catch(e) {
             chn.send(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${e.message}\`\`\``);
         }

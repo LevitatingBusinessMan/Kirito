@@ -1,4 +1,4 @@
-    module.exports = function (command, prefix) {
+module.exports = function (command, prefix) {
     //Specific command
     if (command){
         if (typeof command === "string")
@@ -26,7 +26,7 @@
             footer += (`[Aliases: ${command.conf.aliases.join(', ')}]`);
 
         embed.setFooter(footer);
-        console.log(embed)
+
         return embed;
     }
     //All commands
