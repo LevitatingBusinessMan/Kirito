@@ -1,13 +1,15 @@
 console.log('\033[2J');
 const Discord = require('discord.js');
+const path = require('path');
+const fs = require('fs');
 
 class Kirito extends Discord.Client {
     constructor() {
         super();
-        const path = require('path');
-        const fs = require('fs');
+        this.Discord = Discord;
 
-        require(path.join(__dirname, "./util/prototypes"));
+        require(path.join(__dirname, "./util/prototypes.js"));
+
         (async () => {
             this.config = require(path.join(__dirname, "../config/config.js"));
 
@@ -19,6 +21,8 @@ class Kirito extends Discord.Client {
             process.on('exit', code => 
                 this.logger.log('err', `Process exited with code ${code}`)    
             );
+
+            this.loadUtilities();
 
             const spinner = require(path.join(__dirname, "./util/spinner.js"));
 
@@ -123,6 +127,10 @@ class Kirito extends Discord.Client {
             name: guild.name,
             prefix: false
         }
+    }
+
+    loadUtilities(){
+        this.renderHelp = require(path.join(__dirname, "./util/renderHelp.js")); 
     }
 }
 

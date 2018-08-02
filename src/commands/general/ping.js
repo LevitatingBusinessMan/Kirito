@@ -1,21 +1,21 @@
 class Ping {
     constructor() {
         this.help = {
-            "description": "Command example",
-            "usage": "[prefix] command"
+            "description": "Test the RTT (round-trip-time) of Kirito's connection with the Discord API",
+            "usage": "[prefix]ping"
         }
         this.conf = {
             "disabled": false,
-            "aliases": [],
+            "aliases": ["pong"],
             "perms": [],
             "guildOnly": false,
-            "ownerOnly": true,
+            "ownerOnly": false,
             "expectedArgs": false,
             "requires": []
         }
     }
-    async run(Kirito, args, message, prefix, send) {
-        message.channel.send(":stopwatch: testing connection")
+    async run(Kirito, args, message, alias, prefix, chn) {
+        chn.send(":stopwatch: testing connection")
         .then(msg => msg.edit(`Ping: \`${msg.createdTimestamp - message.createdTimestamp}\` ms`));
     }
 }
