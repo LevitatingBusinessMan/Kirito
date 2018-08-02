@@ -1,20 +1,36 @@
+require('draftlog').into(console)
+
 class Spinner {
     constructor(string, speed, spinner) {
-        spinner = spinner.split("") || "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏".split("");
+        this.string = string;
+        this.speed = speed;
 
-        let i = 0;
+        this.spinner = spinner ? spinner.split("") : "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏".split("");
+        this.update = console.draft(string.replace("%s", this.spinner[0]));
+
+        let i = 1;
         this.interval = setInterval(() => {
-            process.stdout.cursorTo(0);
-            process.stdout.write(string.replace("%s", spinner[i]));
-            if (i < spinner.length-1)
+            this.update(string.replace("%s", this.spinner[i]));
+            if (i < this.spinner.length-1)
                 i++;
             else i = 0;
-        }, speed);
+        }, this.speed);
     }
-    stop() {
+
+    stop(replacement) {
         clearInterval(this.interval);
-        process.stdout.clearLine();
-        process.stdout.cursorTo(0);
+        this.update(replacement);
+    }
+
+    change(string, speed, spinner) {
+        if (string)
+            this.string = string;
+
+        if (speed)
+            this.speed = speed;
+        
+        if (spinner)
+            this.spinner = spinner.split("");
     }
 };
 

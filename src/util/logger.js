@@ -42,6 +42,26 @@ class Logger {
         console.log(`[${stamp}] ${msg}`);       
     }
 
+    parse(type,msg) {
+        type = type.toUpperCase();
+
+        let time = dayjs().format("HH:mm:ss");
+
+        let stamp = `${type} ${time}`;
+        switch (type) {
+        case "OK":
+            stamp = green(`${type} ${time}`);
+            break;
+        case "WARN":
+            stamp = yellow(`${type} ${time}`);
+            break;
+        case "ERR":
+            stamp = red(`${type} ${time}`);
+        }
+
+        return `[${stamp}] ${msg}`;
+    }
+
     //log actual errors
     error(err) {
         console.log(`${chalk.red(err.code)}: ${err.message.toString()}\n${err.stack.split("\n").slice(1).join("\n")}`);

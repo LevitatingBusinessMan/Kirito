@@ -1,0 +1,8 @@
+module.exports = {
+    "prefix": "r!",
+    "admin": [],
+    "token": "",
+    "port": false,
+    "log": true,
+    "private": true
+};

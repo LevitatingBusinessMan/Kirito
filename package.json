@@ -16,6 +16,10 @@
     "chalk": "^2.4.1",
     "dayjs": "^1.7.2",
     "discord.js": "^11.3.2",
+    "draftlog": "^1.0.12",
+    "enmap": "^2.7.2",
+    "enmap-level": "^2.1.0",
+    "express": "^4.16.3",
     "rethinkdb": "^2.3.3",
     "unzip": "^0.1.11"
   }
