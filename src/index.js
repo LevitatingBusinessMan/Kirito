@@ -12,9 +12,6 @@ class Kirito extends Discord.Client {
         (async () => {
             this.config = require(path.join(__dirname, "../config/config.js"));
             
-/*             if (this.config.port)
-                this.server = new (require(path.join(__dirname, './util/webserver/index.js')))(this.config.port); */
-
             if (this.config.log)
             this.logger = new (require('./util/logger.js'))(path.join(__dirname, '../log'));
             this.log = this.logger.log;
