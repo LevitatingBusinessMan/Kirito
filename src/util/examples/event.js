@@ -1,3 +1,3 @@
-module.exports = function eventName (Kirito, arg) {
+module.exports = function eventName (Kirito, ...args) {
     //Code to run
 }

@@ -8,10 +8,9 @@ class Kirito extends Discord.Client {
         const fs = require('fs');
 
         require(path.join(__dirname, "./util/prototypes"));
-
         (async () => {
             this.config = require(path.join(__dirname, "../config/config.js"));
-            
+
             if (this.config.log)
             this.logger = new (require('./util/logger.js'))(path.join(__dirname, '../log'));
             this.log = this.logger.log;
@@ -19,9 +18,6 @@ class Kirito extends Discord.Client {
             //Process events
             process.on('exit', code => 
                 this.logger.log('err', `Process exited with code ${code}`)    
-            );
-            process.on('unhandledRejection', (reason, place) =>
-                this.logger.log('err', `Unhandled rejection at: ${place}, reason: ${reason}`)
             );
 
             const spinner = require(path.join(__dirname, "./util/spinner.js"));
@@ -33,9 +29,10 @@ class Kirito extends Discord.Client {
 
             this.users_ = new enmap({provider: new enmap_level({name:"users",dataDir})});
             this.guilds_ = new enmap({provider: new enmap_level({name:"guilds",dataDir})});
-        
-            let usersDraft = new spinner(this.logger.parse("ok","Loading users from DB"), 300,);
-            let guildsDraft = new spinner(this.logger.parse("ok","Loading guilds from DB"), 300,);
+            //this.stats = new enmap({provider: new enmap_level({name:"stats",dataDir})});
+
+            let usersDraft = new spinner(this.logger.parse("ok","Loading users from DB %s"), 300,);
+            let guildsDraft = new spinner(this.logger.parse("ok","Loading guilds from DB %s"), 300,);
 
             this.users_.defer.then(() => usersDraft.stop(this.logger.parse('ok',`Users loaded: ${this.users_.size}`)));
             this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('ok',`Guilds loaded: ${this.guilds_.size}`)));
@@ -43,6 +40,9 @@ class Kirito extends Discord.Client {
             //Events and Commands
             this.loadCommands();
             this.loadEvents();
+
+            //Disable commands with missing keys
+            require(path.join(__dirname,'./util/keyCheck'))(this);
 
             //Logging in
             this.loginSpinner = new spinner("Logging in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
@@ -76,8 +76,11 @@ class Kirito extends Discord.Client {
                 
                 this.commands[command.name] = command;
                 
+                if (!this.commandAliases)
+                    this.commandAliases = {};
+
                 command.conf.aliases.forEach(alias => {
-                    this.commandAliases = this.commands[command.name];
+                    this.commandAliases[alias] = this.commands[command.name];
                 });
             })
         );
@@ -103,6 +106,24 @@ class Kirito extends Discord.Client {
         });
         this.log(failed > 0 ? "warn" : "ok",`Events loaded: ${count-failed}/${count}`);
     }
+
+    userEntry(user) {
+        return {
+            id: user.id,
+            name: user.username,
+            tag: user.discriminator,
+            bio: false,
+            points: 0
+        }
+    }
+
+    guildEntry(guild) {
+        return {
+            id: guild.id,
+            name: guild.name,
+            prefix: false
+        }
+    }
 }
 
-new Kirito();
+new Kirito({disableEveryone: true});

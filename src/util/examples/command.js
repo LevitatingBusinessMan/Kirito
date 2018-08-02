@@ -14,7 +14,7 @@ class Command {
             "requires": []
         }
     }
-    async run(client, args, message, prefix, send) {
+    async run(Kirito, args, message, prefix, send) {
 
     }
 }

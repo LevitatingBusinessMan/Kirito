@@ -6,16 +6,16 @@ class Ping {
         }
         this.conf = {
             "disabled": false,
-            "aliases": ['test'],
+            "aliases": [],
             "perms": [],
             "guildOnly": false,
-            "ownerOnly": false,
+            "ownerOnly": true,
             "expectedArgs": false,
             "requires": []
         }
     }
-    async run(client, args, message, prefix, send) {
-        send(":stopwatch: testing connection")
+    async run(Kirito, args, message, prefix, send) {
+        message.channel.send(":stopwatch: testing connection")
         .then(msg => msg.edit(`Ping: \`${msg.createdTimestamp - message.createdTimestamp}\` ms`));
     }
 }

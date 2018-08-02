@@ -1,8 +1,10 @@
 module.exports = {
     "prefix": "r!",
-    "admin": [],
+    "admins": [],
     "token": "",
-    "port": false,
     "log": true,
-    "private": true
+    "private": true,
+
+    "keys": {
+    }
 };
