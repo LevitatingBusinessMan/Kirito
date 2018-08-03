@@ -23,7 +23,7 @@ class Kirito extends Discord.Client {
             );
 
             this.loadUtilities();
-            this.editMessages = new Map();
+            this.savedMessages = new Map();
 
             const spinner = require(path.join(__dirname, "./util/spinner.js"));
 

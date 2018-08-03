@@ -1,5 +1,5 @@
 module.exports = async function message (Kirito, [message]) {
-
+    
     let prefix;
     if (!message.guild)
         prefix = Kirito.config.prefix;
@@ -85,6 +85,8 @@ module.exports = async function message (Kirito, [message]) {
             if (Kirito.commandAliases[commandName])
                 alias = commandName;
 
+            message.respond = require(require('path').join(__dirname, '../util/messageRespond'))(Kirito);
+
             try {
                 await command.run(Kirito, args, message, alias, prefix, message.channel);
             } catch(e) {
@@ -94,7 +96,7 @@ module.exports = async function message (Kirito, [message]) {
 
         //Command not recognized
         } else {
-            Kirito.editMessages.set(message.id, message);
+            Kirito.savedMessages.set(message.id, {type:'edit',message});
         }
     }
 }
