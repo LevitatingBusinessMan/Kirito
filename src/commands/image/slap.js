@@ -1,7 +1,7 @@
 class Slap {
     constructor() {
         this.help = {
-            "description": "Slap someone!",
+            "description": "Slap someone! (rem api)",
             "usage": "[prefix]slap somePerson"
         }
         this.conf = {

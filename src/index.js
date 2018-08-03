@@ -116,7 +116,6 @@ class Kirito extends Discord.Client {
         return {
             id: user.id,
             name: user.username,
-            tag: user.discriminator,
             bio: false,
             points: 0
         }

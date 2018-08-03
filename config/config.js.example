@@ -4,6 +4,8 @@ module.exports = {
     "token": "",
     "log": true,
     "private": true,
+    "show_disabled": false,
+    "logChannel": false //Channel ID
 
     "keys": {
     }

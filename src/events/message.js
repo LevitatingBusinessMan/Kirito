@@ -24,6 +24,10 @@ module.exports = async function message (Kirito, [message]) {
             if (command.conf.disabled)
                 return message.channel.send(disabled);
 
+            //NSFW
+            if (command.conf.nsfw && !message.channel.nsfw)
+                return message.channel.send(nsfw);
+
             //Guild only
             if (!message.guild && command.conf.guildOnly)
                 return message.channel.send(guildOnly);
@@ -103,4 +107,5 @@ adminOnly = ":x: This command is for administrators of Kirito only",
 invalidArgs = ":x: The arguments `%s` are invalid for this command. Take a look at this commands help:",
 missingArgs = ":x: Missing arguments. Take a look at this commands help:",
 disabled = ":x: This command has been disabled",
+nsfw = ":x: This channel isn't nsfw!"
 errorMessage = ":x: Oops! An error occured";

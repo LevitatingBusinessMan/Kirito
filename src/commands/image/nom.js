@@ -1,8 +1,8 @@
-class Command {
+class Nom {
     constructor() {
         this.help = {
-            "description": "Command example",
-            "usage": "[prefix] command"
+            "description": "Nom image (rem api)",
+            "usage": "[prefix]nom"
         }
         this.conf = {
             "disabled": false,
@@ -11,13 +11,12 @@ class Command {
             "guildOnly": false,
             "ownerOnly": false,
             "expectedArgs": false,
-            "nsfw": false,
             "requires": []
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        //Code to run
+        chn.send(await Kirito.getImage('nom', message.member, args[0]))
     }
 }
 
-module.exports = Command;
+module.exports = Nom;

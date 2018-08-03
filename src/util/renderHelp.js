@@ -37,7 +37,8 @@ module.exports = function (command, prefix) {
             if (category != 'admin') {
                 if (!categories[category])
                     categories[category] = [];
-                categories[category].push(command);
+                if (!this.commands[command].conf.disabled || this.commands[command].conf.disabled && this.config.show_disabled)
+                    categories[category].push(command);
             }
         }
 

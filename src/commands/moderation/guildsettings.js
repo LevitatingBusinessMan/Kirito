@@ -1,14 +1,14 @@
-class Command {
+class Guildsettings {
     constructor() {
         this.help = {
-            "description": "Command example",
-            "usage": "[prefix] command"
+            "description": "Shows all guilds' settings",
+            "usage": "[prefix]guildsettings"
         }
         this.conf = {
-            "disabled": false,
+            "disabled": true,
             "aliases": [],
             "perms": [],
-            "guildOnly": false,
+            "guildOnly": true,
             "ownerOnly": false,
             "expectedArgs": false,
             "nsfw": false,
@@ -16,8 +16,8 @@ class Command {
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        //Code to run
+        let guild = Kirito.guilds_.get(message.guild.id);
     }
 }
 
-module.exports = Command;
+module.exports = Guildsettings;

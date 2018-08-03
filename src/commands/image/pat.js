@@ -1,8 +1,8 @@
-class Command {
+class Pat {
     constructor() {
         this.help = {
-            "description": "Command example",
-            "usage": "[prefix] command"
+            "description": "Pat someone (rem api)",
+            "usage": "[prefix]pat"
         }
         this.conf = {
             "disabled": false,
@@ -11,13 +11,12 @@ class Command {
             "guildOnly": false,
             "ownerOnly": false,
             "expectedArgs": false,
-            "nsfw": false,
             "requires": []
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        //Code to run
+        chn.send(await Kirito.getImage('pat', message.member, args[0]))
     }
 }
 
-module.exports = Command;
+module.exports = Pat;

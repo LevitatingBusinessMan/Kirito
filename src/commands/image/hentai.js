@@ -1,8 +1,8 @@
-class Command {
+class Hentai {
     constructor() {
         this.help = {
-            "description": "Command example",
-            "usage": "[prefix] command"
+            "description": "Hentai image (CFs API)",
+            "usage": "[prefix]hentai"
         }
         this.conf = {
             "disabled": false,
@@ -11,13 +11,13 @@ class Command {
             "guildOnly": false,
             "ownerOnly": false,
             "expectedArgs": false,
-            "nsfw": false,
+            "nsfw": true,
             "requires": []
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        //Code to run
+        chn.send(await Kirito.getImage('hentai', message.member, args[0]))
     }
 }
 
-module.exports = Command;
+module.exports = Hentai;
