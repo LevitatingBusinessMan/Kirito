@@ -52,7 +52,7 @@ class Kirito extends Discord.Client {
             //Logging in
             this.loginSpinner = new spinner("Logging in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
             this.login(this.config.token);
-
+            this.config.token = null;
         })();
     }
 
