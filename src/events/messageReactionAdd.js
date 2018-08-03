@@ -1,4 +1,4 @@
-module.exports = function messageReactionAdd (Kirito, [messageReaction, user]) {
+module.exports = async function messageReactionAdd (Kirito, [messageReaction, user]) {
     if (!Kirito.savedMessages.has(messageReaction.message.id))
         return;
     
@@ -7,11 +7,25 @@ module.exports = function messageReactionAdd (Kirito, [messageReaction, user]) {
     && user.id === Kirito.savedMessages.get(messageReaction.message.id).message.ogAuthorID
     && Kirito.savedMessages.get(messageReaction.message.id).type === 'confirm';
 
-    if (isEmojiConfirm(messageReaction,user)) {
+    let isDestructor = (messageReaction, user) => 
+    messageReaction.emoji.name === "🗑"
+    && user.id === Kirito.savedMessages.get(messageReaction.message.id).message.ogAuthorID
+    && Kirito.savedMessages.get(messageReaction.message.id).type === 'destructor';
+
+    if (isEmojiConfirm(messageReaction, user)) {
         if (messageReaction.emoji.name === "✅")
             Kirito.savedMessages.get(messageReaction.message.id).message.acceptFN();
         if (messageReaction.emoji.name === "❌")
             Kirito.savedMessages.get(messageReaction.message.id).message.denyFN();
+        Kirito.savedMessages.delete(messageReaction.message.id)
+    }
+
+    if (isDestructor(messageReaction, user)) {
+        messageReaction.message.delete();
+        let ogMessage = await messageReaction.message.channel.fetchMessage(messageReaction.message.ogMessageID)
+        if (ogMessage)
+            ogMessage.delete();
+
         Kirito.savedMessages.delete(messageReaction.message.id)
     }
 }
