@@ -19,7 +19,7 @@ class Prefix {
             chn.send("Default prefix: " + Kirito.config.prefix);
         else {
             if (args[0])
-                if (message.member.hasPermission("MANAGE_SERVER")) {
+                if (message.member.hasPermission("MANAGE_GUILD")) {
                     let guild = Kirito.guilds_.get(message.guild.id);
                     guild.prefix = args[0];
                     Kirito.guilds_.get(message.guild.id, guild);

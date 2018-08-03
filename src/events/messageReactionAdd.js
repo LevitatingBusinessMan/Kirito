@@ -9,9 +9,9 @@ module.exports = function messageReactionAdd (Kirito, [messageReaction, user]) {
 
     if (isEmojiConfirm(messageReaction,user)) {
         if (messageReaction.emoji.name === "✅")
-            Kirito.savedMessages.get(messageReaction.message.id).message.accept();
+            Kirito.savedMessages.get(messageReaction.message.id).message.acceptFN();
         if (messageReaction.emoji.name === "❌")
-            Kirito.savedMessages.get(messageReaction.message.id).message.deny();
+            Kirito.savedMessages.get(messageReaction.message.id).message.denyFN();
         Kirito.savedMessages.delete(messageReaction.message.id)
     }
 }

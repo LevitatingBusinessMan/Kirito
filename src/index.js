@@ -125,6 +125,9 @@ class Kirito extends Discord.Client {
         return {
             id: guild.id,
             name: guild.name,
+            greeting: null,
+            farewell: null,
+            messageChannel: null,
             prefix: false
         }
     }
@@ -133,6 +136,7 @@ class Kirito extends Discord.Client {
         this.renderHelp = require(path.join(__dirname, "./util/renderHelp.js"));
         this.getImage = require(path.join(__dirname, "./util/getImage.js"));
         this.getUser = require(path.join(__dirname, "./util/getUser.js"));
+        this.wait = (ms,fn)=>{let id=setInterval(()=>{clearInterval(id);fn();},ms)};
     }
 }
 
