@@ -8,8 +8,10 @@ Placeholders:
 \`%user%\`: username (Kirito)
 \`%user-tag%\`: Username with tag (Kirito#0001)
 \`%mention%\`: mention (@kirito#0001)
-\`%server%:\` Name of server`,
-            "usage": "[prefix]greeting Bye bye %user%!"
+\`%server%:\` Name of server
+
+To disable: \`[prefix]farewell -remove\``,
+            "usage": "[prefix]farewell Bye bye %user%!"
         }
         this.conf = {
             "disabled": false,
@@ -34,6 +36,13 @@ Placeholders:
                         return message.respond(`Channel for welcome/farewell messages is now ${args[1]}`)
                     }
                     else return message.respond("That is not a channel!");
+                }
+
+                //Remove
+                if (args[0] === "-remove") {
+                    guild.greeting = null;
+                    Kirito.guilds_.set(guild.id,guild);
+                    return message.respond(`Farewell message removed!`)
                 }
 
                 //Check if channel exists
@@ -68,7 +77,7 @@ Placeholders:
             .setTitle(message.guild.name)
             .addField("Greeting", guild.greeting ? guild.greeting : "none")
             .addField("Farewell", guild.farewell ? guild.farewell : "none")
-            .addField("Channel", guild.channel ? `<#${guild.channel}>` : "none")
+            .addField("Channel", guild.messageChannel ? `<#${guild.messageChannel}>` : "none")
             .setFooter("Change with farewell and greeting commands"));
         }
     }

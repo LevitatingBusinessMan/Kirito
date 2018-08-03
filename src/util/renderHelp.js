@@ -8,7 +8,7 @@ module.exports = function (command, prefix) {
 
         let embed = new this.Discord.RichEmbed()
         .setTitle(command.name.capitalize())
-        .setDescription(command.help.description)
+        .setDescription(command.help.description.replace('[prefix]', prefix))
         .addField("Usage:",command.help.usage.replace('[prefix]', prefix));
         
         if (command.conf.ownerOnly)

@@ -16,15 +16,16 @@ class Help {
     }
     async run(Kirito, args, message, alias, prefix, chn) {
         if(args[0]){
-            if (Kirito.commands[args[0]] || Kirito.commandAliases[args[0]])
-                message.respond(Kirito.renderHelp(args[0]));
+            let command = args[0].toLowerCase();
+            if (Kirito.commands[command] || Kirito.commandAliases[command])
+                message.respond(Kirito.renderHelp(command));
             else {
                 const StringSimilarity = require('string-similarity');
-                let ratings = StringSimilarity.findBestMatch(args[0], Object.keys(Kirito.commands)).ratings;
+                let ratings = StringSimilarity.findBestMatch(command, Object.keys(Kirito.commands)).ratings;
                 let similiarCommands = [];
                 for (let i = 0; i < ratings.length; i++) {
                     const result = ratings[i];
-                    if (result.rating > 0.3)
+                    if (result.rating > 0.5)
                         similiarCommands.push(result.target)
                 }
                 if (similiarCommands.length)

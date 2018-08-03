@@ -85,7 +85,7 @@ class Kirito extends Discord.Client {
                     this.commandAliases = {};
 
                 command.conf.aliases.forEach(alias => {
-                    this.commandAliases[alias] = this.commands[command.name];
+                    this.commandAliases[alias.toLowerCase()] = this.commands[command.name];
                 });
             })
         );
