@@ -13,7 +13,7 @@ class Logger {
             if (!fs.existsSync(logDirectory))
                 fs.mkdirSync(logDirectory);
             this.writeStream = fs.createWriteStream(path.join(logDirectory, this.logFile), {flag: "a"})
-            //process.stdout.pipe(this.writeStream);
+            //process.stdout.pipe(this.writeStream)
             //process.stderr.pipe(this.writeStream);
         }
     }

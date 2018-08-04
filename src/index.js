@@ -19,7 +19,7 @@ class Kirito extends Discord.Client {
 
             //Process events
             process.on('exit', code => 
-                this.logger.log('err', `Process exited with code ${code}`)    
+                this.logger.log('err', `Process exited with code ${code}`)
             );
 
             this.loadUtilities();
@@ -30,10 +30,9 @@ class Kirito extends Discord.Client {
             //Enmap
             const enmap = require("enmap");
             const enmap_level = require("enmap-level");
-            const dataDir = path.join(__dirname, "../data");
 
-            this.users_ = new enmap({provider: new enmap_level({name:"users",dataDir})});
-            this.guilds_ = new enmap({provider: new enmap_level({name:"guilds",dataDir})});
+            this.users_ = new enmap({provider: new enmap_level({name:"users"})});
+            this.guilds_ = new enmap({provider: new enmap_level({name:"guilds"})});
             //this.stats = new enmap({provider: new enmap_level({name:"stats",dataDir})});
 
             let usersDraft = new spinner(this.logger.parse("ok","Loading users from DB %s"), 300,);
