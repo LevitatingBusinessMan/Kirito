@@ -37,7 +37,7 @@ To stop receiving wormhole messages:
                 var guild = Kirito.guilds_.filter(x => x.wormholeChannel).random();
                 if (!guild)
                     message.respond("No open wormholes found");
-                if (Kirito.channels.has(guild.wormholeChannel)){
+                else if (Kirito.channels.has(guild.wormholeChannel)){
                     let embed = new Kirito.Discord.RichEmbed()
                     .setColor(0x0066ff)
                     .setDescription(args.splice(1).join(" "))
