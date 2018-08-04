@@ -47,7 +47,7 @@ To disable: \`[prefix]greeting -remove\``,
 
                 //Check if channel exists
                 if (!guild.messageChannel || !Kirito.channels.has(guild.messageChannel))
-                    return message.respond(`Please set a default channel first with \`${prefix}farewell -channel #somechannel\``)
+                    return message.respond(`Please set a default channel first with \`${prefix}greeting -channel #somechannel\``)
                 
                 //Change message
                 let greeting = args.join(" ")
