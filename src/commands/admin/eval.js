@@ -15,7 +15,7 @@ class Eval {
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        let toEval = args.join(' ');
+        let toEval = args.join(' ').replace(/;\s?/g, ';\n').replace(/{\s?/g,'{\n').replace(/}\s?/g,'}\n');
         try {
             const {inspect} = require('util');
             let output = await eval(`(async () => {return ${toEval}})()`);
