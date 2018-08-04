@@ -128,7 +128,8 @@ class Kirito extends Discord.Client {
             greeting: null,
             farewell: null,
             messageChannel: null,
-            prefix: false
+            wormholeChannel: null,
+            prefix: null
         }
     }
 

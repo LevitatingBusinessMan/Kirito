@@ -1,4 +1,6 @@
 module.exports = async function guildDelete (Kirito, [guild]) {
+    Kirito.guilds_.delete(guild.id);
+
     if (Kirito.config.logChannel)
         Kirito.channels.get(Kirito.config.logChannel).send('Left guild:', 
         new Kirito.Discord.RichEmbed()
