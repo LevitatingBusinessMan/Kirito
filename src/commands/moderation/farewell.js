@@ -65,7 +65,7 @@ To disable: \`[prefix]farewell -remove\``,
                 let msg = await message.respond(embed);
                 msg.confirm();
                 msg.accept(() => {
-                    guild.farewell = farewell;
+                    guild.farewell = args.join(" ");
                     Kirito.guilds_.set(guild.id,guild);
                     msg.edit(embed.setTitle('Changed farewell message to:'));
                 }).deny(() => msg.edit(embed.setTitle('Cancelled changing farewell to:')));

@@ -65,7 +65,7 @@ To disable: \`[prefix]greeting -remove\``,
                 let msg = await message.respond(embed);
                 msg.confirm();
                 msg.accept(() => {
-                    guild.greeting = greeting;
+                    guild.greeting = args.join(" ");
                     Kirito.guilds_.set(guild.id,guild);
                     msg.edit(embed.setTitle('Changed greeting to:'));
                 }).deny(() => msg.edit(embed.setTitle('Cancelled changing greeting to:')));
