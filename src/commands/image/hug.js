@@ -15,7 +15,7 @@ class Hug {
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        chn.send(await Kirito.getImage('hug', message.member, args[0]))
+        message.respond(await Kirito.getImage('hug', message.member, args[0]))
     }
 }
 

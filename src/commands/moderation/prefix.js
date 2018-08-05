@@ -16,19 +16,19 @@ class Prefix {
     }
     async run(Kirito, args, message, alias, prefix, chn) {
         if (!message.guild)
-            chn.send("Default prefix: " + Kirito.config.prefix);
+            message.respond("Default prefix: " + Kirito.config.prefix);
         else {
             if (args[0])
                 if (message.member.hasPermission("MANAGE_GUILD")) {
                     let guild = Kirito.guilds_.get(message.guild.id);
                     guild.prefix = args[0];
                     Kirito.guilds_.get(message.guild.id, guild);
-                    chn.send(`new prefix: \`${args[0]}\``);
+                    message.respond(`new prefix: \`${args[0]}\``);
                 }
-                else chn.send("You don't have the manage_server permission!");
+                else message.respond("You don't have the manage_server permission!");
             else {
                 let guildPrefix = Kirito.guilds_.get(message.guild.id).prefix;
-                chn.send(`Current prefix: \`${guildPrefix ? guildPrefix : Kirito.config.prefix}\``);
+                message.respond(`Current prefix: \`${guildPrefix ? guildPrefix : Kirito.config.prefix}\``);
             }
         }
     }

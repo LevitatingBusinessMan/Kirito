@@ -14,7 +14,7 @@ To receive wormhole messages:
 To stop receiving wormhole messages:
 [prefix]wh -close <channel>
 `,
-            "usage": "[prefix]wormhole send My name is Jeff!"
+            "usage": "[prefix]wh send My name is Jeff!"
         }
         this.conf = {
             "disabled": false,
@@ -33,8 +33,13 @@ To stop receiving wormhole messages:
             if (!args[1])
                 return message.respond('Cannot send empty message!');
             
+            let user = Kirito.users_.get(message.author.id)
+            let prevMessages = user.whMessages.filter(time => new Date() - time < 3600000)
+            if (prevMessages.length >= 5)
+                return message.respond(':octagonal_sign: You have hit the limit of 5 messages an hour!');
+
             (function search() {
-                var guild = Kirito.guilds_.filter(x => x.wormholeChannel).random();
+                var guild = Kirito.guilds_.filter(x => x.wormholeChannel && x.id !== message.guild.id).random();
                 if (!guild)
                     message.respond("No open wormholes found");
                 else if (Kirito.channels.has(guild.wormholeChannel)){
@@ -44,6 +49,11 @@ To stop receiving wormhole messages:
                     .setFooter(`${message.guild.name} | ${message.author.tag}`,message.guild.iconURL);
                     Kirito.channels.get(guild.wormholeChannel).send(embed);
                     message.respond(`Your message has travelled through time and space and ended up in **${guild.name}**`);
+
+                    //Add msg, remove previous
+                    prevMessages.push(message.createdTimestamp);
+                    user.whMessages = prevMessages;
+                    Kirito.users_.set(user.id,user);
                 }
                 else {
                     guild.wormholeChannel = null;
@@ -70,6 +80,15 @@ To stop receiving wormhole messages:
                     msg.confirm();
                     msg.accept(() => {
                         let guild = Kirito.guilds_.get(message.guild.id);
+
+                        //If existing wormhole, close message
+                        if (message.guild.channels.has(guild.wormholeChannel))
+                            message.guild.channels.get(guild.wormholeChannel).send({
+                                embed:{
+                                    title:"The wormhole here has been closed!",
+                                    color: 0x0066ff
+                            }}
+                        )
                         guild.wormholeChannel = channel.replace(/<|#|>/g,"");
                         Kirito.guilds_.set(guild.id,guild);
                         delete embed.description;

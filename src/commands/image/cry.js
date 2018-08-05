@@ -15,7 +15,7 @@ class Cry {
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        chn.send(await Kirito.getImage('cry', message.member, args[0]))
+        message.respond(await Kirito.getImage('cry', message.member, args[0]))
     }
 }
 

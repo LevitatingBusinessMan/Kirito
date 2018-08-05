@@ -15,7 +15,7 @@ class Rem {
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        chn.send(await Kirito.getImage('rem', message.member, args[0]))
+        message.respond(await Kirito.getImage('rem', message.member, args[0]))
     }
 }
 

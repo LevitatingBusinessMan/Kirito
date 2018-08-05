@@ -7,7 +7,8 @@ class Kirito extends Discord.Client {
     constructor() {
         super();
         this.Discord = Discord;
-
+        this.rootDir = path.join(__dirname, "..");
+        
         require(path.join(__dirname, "./util/prototypes.js"));
 
         (async () => {
@@ -20,6 +21,10 @@ class Kirito extends Discord.Client {
             //Process events
             process.on('exit', code => 
                 this.logger.log('err', `Process exited with code ${code}`)
+            );
+            
+            process.on('exit', err => 
+                this.logger.error(err)
             );
 
             this.loadUtilities();
@@ -35,11 +40,11 @@ class Kirito extends Discord.Client {
             this.guilds_ = new enmap({provider: new enmap_level({name:"guilds"})});
             //this.stats = new enmap({provider: new enmap_level({name:"stats",dataDir})});
 
-            let usersDraft = new spinner(this.logger.parse("ok","Loading users from DB %s"), 300,);
-            let guildsDraft = new spinner(this.logger.parse("ok","Loading guilds from DB %s"), 300,);
+            let usersDraft = new spinner(this.logger.parse("info","Loading users from DB %s"), 300,);
+            let guildsDraft = new spinner(this.logger.parse("info","Loading guilds from DB %s"), 300,);
 
-            this.users_.defer.then(() => usersDraft.stop(this.logger.parse('ok',`Users loaded: ${this.users_.size}`)));
-            this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('ok',`Guilds loaded: ${this.guilds_.size}`)));
+            this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
+            this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
 
             //Events and Commands
             this.loadCommands();
@@ -88,7 +93,7 @@ class Kirito extends Discord.Client {
                 });
             })
         );
-        this.log(failed > 0 ? "warn" : "ok",`Commands loaded: ${count-failed}/${count}`);
+        this.log(failed > 0 ? "warn" : "info",`Commands loaded: ${count-failed}/${count}`);
     }
 
     loadEvents() {
@@ -108,7 +113,7 @@ class Kirito extends Discord.Client {
                 return;
             }
         });
-        this.log(failed > 0 ? "warn" : "ok",`Events loaded: ${count-failed}/${count}`);
+        this.log(failed > 0 ? "warn" : "info",`Events loaded: ${count-failed}/${count}`);
     }
 
     userEntry(user) {
@@ -116,6 +121,7 @@ class Kirito extends Discord.Client {
             id: user.id,
             name: user.username,
             bio: false,
+            whMessages: [],
             points: 0
         }
     }

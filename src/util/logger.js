@@ -12,44 +12,29 @@ class Logger {
         if (logDirectory) {
             if (!fs.existsSync(logDirectory))
                 fs.mkdirSync(logDirectory);
-            this.writeStream = fs.createWriteStream(path.join(logDirectory, this.logFile), {flag: "a"})
-            //process.stdout.pipe(this.writeStream)
-            //process.stderr.pipe(this.writeStream);
+            
+            let chars = /((\[)\d*m)|(\[[0-9][A-Z])|(\d)/g;
+            let fileStream = fs.createWriteStream(path.join(logDirectory, this.logFile), {flag: "w"});
+            let writeToStdOut = process.stdout.write.bind(process.stdout);
+            process.stdout.write = process.stderr.write= d => {fileStream.write(d.toString().replace(chars,''));writeToStdOut(d);}
         }
     }
-    //Logging messages to console
-
-/*     This should probably be rewritten to look more like Augusts
-    where different kinds of logging methods are used */
 
     log(type, msg) {
-        type = type.toUpperCase();
-
-        let time = dayjs().format("HH:mm:ss");
-
-        let stamp = `${type} ${time}`;
-        switch (type) {
-        case "OK":
-            stamp = green(`${type} ${time}`);
-            break;
-        case "WARN":
-            stamp = yellow(`${type} ${time}`);
-            break;
-        case "ERR":
-            stamp = red(`${type} ${time}`);
-        }
-
-        console.log(`[${stamp}] ${msg}`);       
+        //Used shortcut
+        if (this.constructor.name === "Kirito")
+            var logger = this.logger
+        else var logger = this;
+        console.log(logger.parse(type,msg));       
     }
 
-    parse(type,msg) {
+    parse(type, msg) {
         type = type.toUpperCase();
 
         let time = dayjs().format("HH:mm:ss");
-
         let stamp = `${type} ${time}`;
         switch (type) {
-        case "OK":
+        case "INFO" || "OK":
             stamp = green(`${type} ${time}`);
             break;
         case "WARN":
@@ -62,9 +47,25 @@ class Logger {
         return `[${stamp}] ${msg}`;
     }
 
-    //log actual errors
+    //Shortcuts
+    info(msg) {
+        this.log("INFO",msg)
+    }
+
+    warn(msg) {
+        this.log("INFO",msg)
+    }
+
+    err(msg) {
+        this.log("INFO",msg)
+    }
+
+    /*
+    For more serious errors.
+    Different then the standard above this shows the full stack end ends up in the stderr stream
+    */
     error(err) {
-        console.log(`${chalk.red(err.code)}: ${err.message.toString()}\n${err.stack.split("\n").slice(1).join("\n")}`);
+        console.error(`${red(`[ERROR ${dayjs().format("HH:mm:ss")}]`)}: ${err.message}\n${err.stack.split('\n').splice(1).join('\n')}\n`);
     }
 }
 

@@ -15,7 +15,7 @@ class Ping {
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        chn.send(":stopwatch: testing connection")
+        message.respond(":stopwatch: testing connection")
         .then(msg => msg.edit(`Ping: \`${msg.createdTimestamp - message.createdTimestamp}\` ms`));
     }
 }
