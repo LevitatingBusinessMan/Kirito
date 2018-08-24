@@ -5,7 +5,9 @@ module.exports = {
     "log": true,
     "private": true,
     "show_disabled": false,
-    "logChannel": false //Channel ID
+    "logChannel": false, //Channel ID
+    "raven": false,
+    "lavaStartupTime": 5000,
 
     "keys": {
     }

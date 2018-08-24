@@ -2,6 +2,8 @@ console.log('\033[2J');
 const Discord = require('discord.js');
 const path = require('path');
 const fs = require('fs');
+const { spawn } = require('child_process');
+const { PlayerManager } = require("discord.js-lavalink");
 
 class Kirito extends Discord.Client {
     constructor() {
@@ -15,7 +17,8 @@ class Kirito extends Discord.Client {
             this.config = require(path.join(__dirname, "../config/config.js"));
 
             if (this.config.log)
-            this.logger = new (require('./util/logger.js'))(path.join(__dirname, '../log'));
+                this.logger = new (require(path.join(__dirname, "./util/logger.js")))(path.join(__dirname, "../log"));
+            else this.logger = new (require(path.join(__dirname, "./util/logger.js")))();
             this.log = this.logger.log;
 
             //Process events
@@ -46,6 +49,14 @@ class Kirito extends Discord.Client {
             this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
             this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
 
+            //Lavalink
+            let lavaDraft = new spinner(this.logger.parse("info","Waiting for Lavalink %s"), 300,);
+            spawn("java", ["-jar", path.join(__dirname,"lavalink/Lavalink.jar").replace(/\\/g,"/")])
+            .on("close", () => {
+                this.log('err',"Lavalink process stopped")
+                process.exit();
+            })
+            
             //Events and Commands
             this.loadCommands();
             this.loadEvents();
@@ -53,10 +64,15 @@ class Kirito extends Discord.Client {
             //Disable commands with missing keys
             require(path.join(__dirname,'./util/keyCheck'))(this);
 
-            //Logging in
-            this.loginSpinner = new spinner("Logging in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
-            this.login(this.config.token);
-            this.config.token = null;
+            //Wait before logging in to finish starting Lavalalink
+            this.wait(this.config.lavaStartupTime, () => {
+                lavaDraft.stop(this.logger.parse('info',"Started Lavalink"));
+                
+                //Logging in
+                this.loginSpinner = new spinner("Logging in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
+                this.login(this.config.token);
+                this.config.token = null;
+            })
         })();
     }
 

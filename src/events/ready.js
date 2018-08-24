@@ -14,4 +14,14 @@ module.exports = function ready (Kirito) {
             Kirito.guilds_.set(guild.id,Kirito.guildEntry(guild));
     });
 
+    //Set LavaLink Manager
+    const { PlayerManager } = require("discord.js-lavalink");
+    const nodes = [{ "host": "localhost", "port": 80, "region": "eu", "password": "youshallnotpass" }];
+    Kirito.player = new PlayerManager(Kirito, nodes, {
+        user: Kirito.user.id,
+        shards: 1
+    });
+
+    if (Kirito.config.raven)
+        Kirito.Raven = require("raven").config(Kirito.config.raven).install();
 }

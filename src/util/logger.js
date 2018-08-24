@@ -7,12 +7,16 @@ const readline = require('readline');
 class Logger {
     constructor(logDirectory) {
         this.log_ = "";
-        this.logFile = dayjs().format("(D-M-D) HH[h]-mm[m]-ss[s]") + ".txt";
+        this.logFile = dayjs().format("(D-M-D) HH[h]-mm[m]-ss[s]") + ".log";
 
         if (logDirectory) {
             if (!fs.existsSync(logDirectory))
                 fs.mkdirSync(logDirectory);
-            
+
+            let prevLogs = fs.readdirSync(logDirectory);
+            if (prevLogs.length > 9)
+                fs.unlink(path.join(logDirectory,prevLogs[0]), (e)=>{});
+
             let chars = /((\[)\d*m)|(\[[0-9][A-Z])|(\d)/g;
             let fileStream = fs.createWriteStream(path.join(logDirectory, this.logFile), {flag: "w"});
             let writeToStdOut = process.stdout.write.bind(process.stdout);
@@ -65,7 +69,7 @@ class Logger {
     Different then the standard above this shows the full stack end ends up in the stderr stream
     */
     error(err) {
-        console.error(`${red(`[ERROR ${dayjs().format("HH:mm:ss")}]`)}: ${err.message}\n${err.stack.split('\n').splice(1).join('\n')}\n`);
+        console.error(`${red(`[ERROR ${dayjs().format("HH:mm:ss")}]`)}: ${err.message + err.stack ? "\n"+err.stack.split('\n').splice(1).join('\n'):""}\n`);
     }
 }
 
