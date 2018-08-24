@@ -18,7 +18,8 @@ class Eval {
         let toEval = args.join(' ').replace(/;\s?/g, ';\n').replace(/{\s?/g,'{\n').replace(/}\s?/g,'}\n');
         try {
             const {inspect} = require('util');
-            let output = await eval(`(async () => {return ${toEval}})()`);
+            
+            let output = await eval(`(async () => {${toEval.includes("return")?'':"return"} ${toEval}})()`);
             var msg = await message.respond(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${inspect(output).substr(0,1900)}\`\`\``);
         } catch(e) {
             var msg = await message.respond(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${e.message}\`\`\``);
