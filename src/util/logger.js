@@ -7,7 +7,8 @@ const readline = require('readline');
 class Logger {
     constructor(logDirectory) {
         this.log_ = "";
-        this.logFile = dayjs().format("(D-M-D) HH[h]-mm[m]-ss[s]") + ".log";
+        this.logFile = dayjs().format("(YY-M-D) HH[h]-mm[m]-ss[s]") + ".log";
+        this.lastLogTime = new Date();
 
         if (logDirectory) {
             if (!fs.existsSync(logDirectory))
@@ -24,11 +25,19 @@ class Logger {
         }
     }
 
+    checkDate() {
+        if(this.lastLogTime.getDate() < new Date().getDate() ||
+        this.lastLogTime.getMonth() < new Date().getMonth())
+            console.log(`--[${dayjs().format("MMM D")}]--`)
+        this.lastLogTime = new Date();
+    }
+
     log(type, msg) {
-        //Used shortcut
+        //Called through Kirito's log shortcut
         if (this.constructor.name === "Kirito")
             var logger = this.logger
         else var logger = this;
+        logger.checkDate();
         console.log(logger.parse(type,msg));       
     }
 
@@ -69,6 +78,7 @@ class Logger {
     Different then the standard above this shows the full stack end ends up in the stderr stream
     */
     error(err) {
+        logger.checkDate();
         console.error(`${red(`[ERROR ${dayjs().format("HH:mm:ss")}]`)}: ${err.message + err.stack ? "\n"+err.stack.split('\n').splice(1).join('\n'):""}\n`);
     }
 }

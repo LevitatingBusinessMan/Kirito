@@ -33,7 +33,7 @@ To stop receiving wormhole messages:
             if (!args[1])
                 return message.respond('Cannot send empty message!');
             
-            let user = Kirito.users_.get(message.author.id)
+            let user = Kirito.users_.get(message.author.id);
             let prevMessages = user.whMessages.filter(time => new Date() - time < 3600000)
             if (prevMessages.length >= 5)
                 return message.respond(':octagonal_sign: You have hit the limit of 5 messages an hour!');

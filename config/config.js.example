@@ -7,7 +7,8 @@ module.exports = {
     "show_disabled": false,
     "logChannel": false, //Channel ID
     "raven": false,
-    "lavaStartupTime": 5000,
+    "lavaLinkNode": false, 
+    //Example: {"host": "localhost", "port": 80, "region": "eu", "password": "youshallnotpass" }
 
     "keys": {
     }

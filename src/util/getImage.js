@@ -1,8 +1,12 @@
-const {get} = require("axios");
+//In the future these might have to be replace with axios instances (authorization etc)
 const RemAPI = "https://rra.ram.moe/i/r?type=%s";
 const CFsAPI = "https://api.computerfreaker.cf/v1/%s";
 
-//author is guildmember, receiver is mention, id or username
+/**
+ * @param {String} type The requested image type
+ * @param {GuildMember} author
+ * @param {String} receiver Mention, id or username
+ */
 module.exports = async function (type, author, receiver) {
     switch (type){
         case "slap":
@@ -57,8 +61,9 @@ module.exports = async function (type, author, receiver) {
         case "hentai":
             var api = CFsAPI;
     }
+    
+    let {data} = await this.axios(api.replace("%s",type));
 
-    let {data} = await get(api.replace("%s",type));
     switch (api) {
         case RemAPI:
             var image = "https://rra.ram.moe"+data.path;

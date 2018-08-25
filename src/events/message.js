@@ -10,12 +10,14 @@ module.exports = async function message (Kirito, [message]) {
         if (message.author.bot)
             return;
 
-        let args;
+        let messageExPrefix;
         if (message.content.startsWith(prefix))
-            args = message.content.substr(prefix.length).trim().split(/\s/g).map(x => x.trim());
+            messageExPrefix = message.content.substr(prefix.length);
         if (message.content.startsWith(`<@${Kirito.user.id}>`))
-            args = message.content.substr(`<@${Kirito.user.id}>`.length).trim().split(/\s/g).map(x => x.trim());
+            messageExPrefix = message.content.substr(`<@${Kirito.user.id}>`.length);
         
+        const args = messageExPrefix.trim().split(/\s/g).map(x => x.trim()).filter(x => x.length);
+
         let commandName = args.shift().toLowerCase();
         if (Kirito.commands[commandName] || Kirito.commandAliases[commandName]) {
             command = Kirito.commands[commandName] || Kirito.commandAliases[commandName];

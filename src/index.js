@@ -2,6 +2,7 @@ console.log('\033[2J');
 const Discord = require('discord.js');
 const path = require('path');
 const fs = require('fs');
+const axios = require("axios");
 const { spawn } = require('child_process');
 const { PlayerManager } = require("discord.js-lavalink");
 
@@ -48,14 +49,6 @@ class Kirito extends Discord.Client {
 
             this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
             this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
-
-            //Lavalink
-            let lavaDraft = new spinner(this.logger.parse("info","Waiting for Lavalink %s"), 300,);
-            spawn("java", ["-jar", path.join(__dirname,"lavalink/Lavalink.jar").replace(/\\/g,"/")])
-            .on("close", () => {
-                this.log('err',"Lavalink process stopped")
-                process.exit();
-            })
             
             //Events and Commands
             this.loadCommands();
@@ -64,15 +57,43 @@ class Kirito extends Discord.Client {
             //Disable commands with missing keys
             require(path.join(__dirname,'./util/keyCheck'))(this);
 
-            //Wait before logging in to finish starting Lavalalink
-            this.wait(this.config.lavaStartupTime, () => {
-                lavaDraft.stop(this.logger.parse('info',"Started Lavalink"));
-                
-                //Logging in
-                this.loginSpinner = new spinner("Logging in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
-                this.login(this.config.token);
+            //Package JSON
+            this.pjson = require((path.join(__dirname,'../package.json')));
+
+            //Axios
+            this.axios = axios;
+            this.axios.defaults.headers.common["User-Agent"] = `Kirito/${this.pjson.version} (nodeJS)`;
+            this.axios.defaults.timeout = 5000;
+
+            let afterLogin = () => {
                 this.config.token = null;
-            })
+
+                //Set up Raven
+                if (this.config.raven)
+                    this.Raven = require("raven").config(this.config.raven).install();
+                
+                //Set LavaLink Manager
+                if (this.config.lavaLinkNode) {
+                    const { PlayerManager } = require("discord.js-lavalink");
+                    this.player = new PlayerManager(this, [this.config.lavaLinkNode], {
+                        user: this.user.id,
+                        shards: 1
+                    });
+
+                    //Axios instance for LavaLink Rest API
+                    this.getSong = (id) => {
+                        return this.axios({
+                            url: `http://${this.config.lavaLinkNode.host}:2333/loadtracks`,
+                            headers: {"Authorization": this.config.lavaLinkNode.password},
+                            params: {"identifier":id}
+                        });
+                    }
+                }
+            }
+
+            //Logging in
+            this.loginSpinner = new spinner("Logging in.. %s  ", 300, "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
+            this.login(this.config.token).then(afterLogin);
         })();
     }
 

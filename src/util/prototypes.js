@@ -1,3 +1,11 @@
+Array.prototype.remove = function(value) {
+    let i = this.indexOf(value);
+    if (i < 0)
+        throw new Error(`Value ${value} not found in array!`)
+
+    this.splice(i,1);
+}
+
 Array.prototype.last = function(){
     return this[this.length - 1];
 };
