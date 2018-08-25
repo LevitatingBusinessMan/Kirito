@@ -2,7 +2,7 @@ class Command {
     constructor() {
         this.help = {
             "description": "Command example",
-            "usage": "[prefix] command"
+            "usage": "[prefix]command"
         }
         this.conf = {
             "disabled": false,

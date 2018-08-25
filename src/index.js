@@ -11,7 +11,8 @@ class Kirito extends Discord.Client {
         super();
         this.Discord = Discord;
         this.rootDir = path.join(__dirname, "..");
-        
+        this.debug = process.argv.includes('-debug');
+
         require(path.join(__dirname, "./util/prototypes.js"));
 
         (async () => {
@@ -20,7 +21,7 @@ class Kirito extends Discord.Client {
             if (this.config.log)
                 this.logger = new (require(path.join(__dirname, "./util/logger.js")))(path.join(__dirname, "../log"));
             else this.logger = new (require(path.join(__dirname, "./util/logger.js")))();
-            this.log = this.logger.log;
+            this.log = this.logger.log.bind(this.logger);
 
             //Process events
             process.on('exit', code => 
@@ -75,14 +76,16 @@ class Kirito extends Discord.Client {
                 //Set LavaLink Manager
                 if (this.config.lavaLinkNode) {
                     const { PlayerManager } = require("discord.js-lavalink");
-                    this.player = new PlayerManager(this, [this.config.lavaLinkNode], {
+                    this.manager = new PlayerManager(this, [this.config.lavaLinkNode], {
                         user: this.user.id,
                         shards: 1
                     });
+                    this.manager.players = new Discord.Collection();
 
                     //Axios instance for LavaLink Rest API
-                    this.getSong = (id) => {
+                    this.lavaRest = (id) => {
                         return this.axios({
+                            timeout: 5000,
                             url: `http://${this.config.lavaLinkNode.host}:2333/loadtracks`,
                             headers: {"Authorization": this.config.lavaLinkNode.password},
                             params: {"identifier":id}
@@ -100,25 +103,28 @@ class Kirito extends Discord.Client {
     loadCommands(){
         const fs = require('fs');
         const path = require('path');
+        let reload = require('require-reload')(require);
+        this.commands = {};
 
         let count = 0;
         let failed = 0;
+        let failedFiles = [];
         fs.readdirSync(path.join(__dirname, './commands')).forEach(category =>
             fs.readdirSync(path.join(__dirname, './commands', category)).forEach(file => {
                 count++;
                 try {
-                    var command = new (require(path.join(__dirname, './commands', category, file)))();
+                    var command = new (reload(path.join(__dirname, './commands', category, file)))();
                 } catch(e) {
                     this.logger.log('err', `Error loading command ${file}`);
+                    if (this.debug)
+                        this.logger.error(e);
+                    failedFiles.push(file);
                     failed++;
                     return;
                 }
 
                 command.category = category;
                 command.name = command.constructor.name.toLowerCase();
-
-                if (!this.commands)
-                    this.commands = {};
                 
                 this.commands[command.name] = command;
                 
@@ -131,6 +137,11 @@ class Kirito extends Discord.Client {
             })
         );
         this.log(failed > 0 ? "warn" : "info",`Commands loaded: ${count-failed}/${count}`);
+        return {
+            "success": count-failed,
+            "total": count,
+            failedFiles
+        }
     }
 
     loadEvents() {
@@ -139,18 +150,27 @@ class Kirito extends Discord.Client {
 
         let count = 0;
         let failed = 0;
+        let failedFiles = [];
         fs.readdirSync(path.join(__dirname, './events')).forEach(file => {
             count++;
             try {
                 let event = require(path.join(__dirname, './events', file));
                 this.on(event.name, (...args) => event(this, args));
             } catch(e) {
-                this.logger.log('err', `Error loading event ${file}`)
+                this.logger.log('err', `Error loading event ${file}`);
+                if (this.debug)
+                    this.logger.error(e);
+                failedFiles.push(file);
                 failed++;
                 return;
             }
         });
         this.log(failed > 0 ? "warn" : "info",`Events loaded: ${count-failed}/${count}`);
+        return {
+            "success": count-failed,
+            "total": count,
+            failedFiles
+        }
     }
 
     userEntry(user) {
@@ -179,6 +199,7 @@ class Kirito extends Discord.Client {
         this.renderHelp = require(path.join(__dirname, "./util/renderHelp.js"));
         this.getImage = require(path.join(__dirname, "./util/getImage.js"));
         this.getUser = require(path.join(__dirname, "./util/getUser.js"));
+        this.getSong = require(path.join(__dirname, "./util/getSong.js"));
         this.wait = (ms,fn)=>{let id=setInterval(()=>{clearInterval(id);fn();},ms)};
     }
 }

@@ -33,12 +33,8 @@ class Logger {
     }
 
     log(type, msg) {
-        //Called through Kirito's log shortcut
-        if (this.constructor.name === "Kirito")
-            var logger = this.logger
-        else var logger = this;
-        logger.checkDate();
-        console.log(logger.parse(type,msg));       
+        this.checkDate();
+        console.log(this.parse(type,msg));       
     }
 
     parse(type, msg) {
@@ -47,7 +43,7 @@ class Logger {
         let time = dayjs().format("HH:mm:ss");
         let stamp = `${type} ${time}`;
         switch (type) {
-        case "INFO" || "OK":
+        case "INFO":
             stamp = green(`${type} ${time}`);
             break;
         case "WARN":
@@ -76,9 +72,10 @@ class Logger {
     /*
     For more serious errors.
     Different then the standard above this shows the full stack end ends up in the stderr stream
+        And it logs to sentry
     */
     error(err) {
-        logger.checkDate();
+        this.checkDate();
         console.error(`${red(`[ERROR ${dayjs().format("HH:mm:ss")}]`)}: ${err.message + err.stack ? "\n"+err.stack.split('\n').splice(1).join('\n'):""}\n`);
     }
 }
