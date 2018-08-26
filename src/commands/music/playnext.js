@@ -1,8 +1,8 @@
-class Play {
+class PlayNext {
     constructor() {
         this.help = {
             "description": `
-Play a song or playlist. Supported sources:
+Select a song or playlist to play next. Supported sources:
 \`YouTube\`
 \`SoundCloud\`
 \`Bandcamp\`
@@ -13,8 +13,7 @@ Play a song or playlist. Supported sources:
 
 If no specific link is specified Kirito will search Youtube.
 When argument \`-sc\` is used Kirito will search Soundcloud
-`,
-            "usage": "[prefix]play We Are Number One"
+`,            "usage": "[prefix]playNext"
         }
         this.conf = {
             "disabled": false,
@@ -29,7 +28,7 @@ When argument \`-sc\` is used Kirito will search Soundcloud
     }
     async run(Kirito, args, message, alias, prefix, chn) {
         if (!message.member.voiceChannel)
-            return message.respond(":x: You are not in a voice channel!");
+        return message.respond(":x: You are not in a voice channel!");
 
         Kirito.getSong(message, args)
         .catch(e => {
@@ -40,7 +39,7 @@ When argument \`-sc\` is used Kirito will search Soundcloud
         }).then(track => {
         if (!track)
             return message.respond(":x: Failed loading track");
-        
+            
         if (!Kirito.manager.players.has(message.guild.id))
             var player = Kirito.createPlayer(message.guild.id, message.member.voiceChannel.id, message.channel.id);
         else
@@ -57,7 +56,7 @@ When argument \`-sc\` is used Kirito will search Soundcloud
                 track.timestamp = new Date();
             });
 
-            player.queue = player.queue.concat(tracks);
+            player.queue = tracks.concat(player.queue);
             if (!player.track)
                 player.emit('end',"START_QUEUE");
         }
@@ -67,12 +66,13 @@ When argument \`-sc\` is used Kirito will search Soundcloud
             track.authorAvatar = message.author.avatarURL;
             track.timestamp = new Date();
 
-            player.play(track.track);
-            player.sendMessage(track);
-            player.nowPlaying = track;
+            player.queue.unshift(track);
+            if (!player.track)
+                player.emit('end',"START_QUEUE");
+            else message.respond(`Next song: \`${track.info.title}\``)
         }
         });
     }
 }
 
-module.exports = Play;
+module.exports = PlayNext;

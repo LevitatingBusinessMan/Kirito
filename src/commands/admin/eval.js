@@ -6,7 +6,7 @@ class Eval {
         }
         this.conf = {
             "disabled": false,
-            "aliases": [],
+            "aliases": ["e"],
             "perms": [],
             "guildOnly": false,
             "ownerOnly": false,
@@ -23,6 +23,8 @@ class Eval {
             var msg = await message.respond(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${inspect(output).substr(0,1900)}\`\`\``);
         } catch(e) {
             var msg = await message.respond(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${e.message}\`\`\``);
+            if (Kirito.debug)
+                Kirito.logger.error(e);
         }
         msg.destruct();
     }

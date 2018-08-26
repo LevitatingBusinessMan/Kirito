@@ -18,7 +18,7 @@ module.exports = Kirito => {
         Kirito.wait(15000, () => {
             if (Kirito.savedMessages.has(this.id)) {
                 if (Kirito.savedMessages.get(this.id).message.denyFN)
-                    Kirito.savedMessages.get(this.id).message.denyFN();
+                    Kirito.savedMessages.get(this.id).message.denyFN(Kirito.savedMessages.get(this.id));
                 Kirito.savedMessages.delete(this.id);
             }
         })

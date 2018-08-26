@@ -1,8 +1,8 @@
-class Play {
+class Qa {
     constructor() {
         this.help = {
             "description": `
-Play a song or playlist. Supported sources:
+Queue a song or playlist. Supported sources:
 \`YouTube\`
 \`SoundCloud\`
 \`Bandcamp\`
@@ -14,11 +14,11 @@ Play a song or playlist. Supported sources:
 If no specific link is specified Kirito will search Youtube.
 When argument \`-sc\` is used Kirito will search Soundcloud
 `,
-            "usage": "[prefix]play We Are Number One"
+            "usage": "[prefix]qa"
         }
         this.conf = {
             "disabled": false,
-            "aliases": [],
+            "aliases": ["q"],
             "perms": [],
             "guildOnly": true,
             "ownerOnly": false,
@@ -29,7 +29,7 @@ When argument \`-sc\` is used Kirito will search Soundcloud
     }
     async run(Kirito, args, message, alias, prefix, chn) {
         if (!message.member.voiceChannel)
-            return message.respond(":x: You are not in a voice channel!");
+        return message.respond(":x: You are not in a voice channel!");
 
         Kirito.getSong(message, args)
         .catch(e => {
@@ -40,7 +40,7 @@ When argument \`-sc\` is used Kirito will search Soundcloud
         }).then(track => {
         if (!track)
             return message.respond(":x: Failed loading track");
-        
+            
         if (!Kirito.manager.players.has(message.guild.id))
             var player = Kirito.createPlayer(message.guild.id, message.member.voiceChannel.id, message.channel.id);
         else
@@ -67,12 +67,13 @@ When argument \`-sc\` is used Kirito will search Soundcloud
             track.authorAvatar = message.author.avatarURL;
             track.timestamp = new Date();
 
-            player.play(track.track);
-            player.sendMessage(track);
-            player.nowPlaying = track;
+            player.queue.push(track);
+            if (!player.track)
+                player.emit('end',"START_QUEUE");
+            else message.respond(`Queued: \`${track.info.title}\``)
         }
         });
     }
 }
 
-module.exports = Play;
+module.exports = Qa;

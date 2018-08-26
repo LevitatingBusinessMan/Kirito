@@ -5,7 +5,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\src\\index.js"
+            "program": "${workspaceFolder}\\src\\index.js",
+            "args": ["-debug"]
         }
     ]
 }

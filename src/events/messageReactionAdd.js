@@ -14,9 +14,9 @@ module.exports = async function messageReactionAdd (Kirito, [messageReaction, us
 
     if (isEmojiConfirm(messageReaction, user)) {
         if (messageReaction.emoji.name === "✅")
-            Kirito.savedMessages.get(messageReaction.message.id).message.acceptFN();
+            Kirito.savedMessages.get(messageReaction.message.id).message.acceptFN(messageReaction.message);
         if (messageReaction.emoji.name === "❌")
-            Kirito.savedMessages.get(messageReaction.message.id).message.denyFN();
+            Kirito.savedMessages.get(messageReaction.message.id).message.denyFN(messageReaction.message);
         Kirito.savedMessages.delete(messageReaction.message.id)
     }
 

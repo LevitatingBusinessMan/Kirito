@@ -5,6 +5,7 @@ const fs = require('fs');
 const axios = require("axios");
 const { spawn } = require('child_process');
 const { PlayerManager } = require("discord.js-lavalink");
+const reload = require('require-reload')(require);
 
 class Kirito extends Discord.Client {
     constructor() {
@@ -24,9 +25,9 @@ class Kirito extends Discord.Client {
             this.log = this.logger.log.bind(this.logger);
 
             //Process events
-            process.on('exit', code => 
-                this.logger.log('err', `Process exited with code ${code}`)
-            );
+            process.on('exit', code => {
+                this.logger.log('err', `Process exited with code ${code}`);
+            });
             
             process.on('exit', err => 
                 this.logger.error(err)
@@ -103,7 +104,6 @@ class Kirito extends Discord.Client {
     loadCommands(){
         const fs = require('fs');
         const path = require('path');
-        let reload = require('require-reload')(require);
         this.commands = {};
 
         let count = 0;
@@ -126,6 +126,9 @@ class Kirito extends Discord.Client {
                 command.category = category;
                 command.name = command.constructor.name.toLowerCase();
                 
+                if (!this.config.lavaLinkNode && category === "music")
+                    command.conf.disabled = true;
+
                 this.commands[command.name] = command;
                 
                 if (!this.commandAliases)
@@ -135,7 +138,7 @@ class Kirito extends Discord.Client {
                     this.commandAliases[alias.toLowerCase()] = this.commands[command.name];
                 });
             })
-        );
+        );     
         this.log(failed > 0 ? "warn" : "info",`Commands loaded: ${count-failed}/${count}`);
         return {
             "success": count-failed,
@@ -191,15 +194,17 @@ class Kirito extends Discord.Client {
             farewell: null,
             messageChannel: null,
             wormholeChannel: null,
+            musicChannel: null,
             prefix: null
         }
     }
 
     loadUtilities(){
-        this.renderHelp = require(path.join(__dirname, "./util/renderHelp.js"));
-        this.getImage = require(path.join(__dirname, "./util/getImage.js"));
-        this.getUser = require(path.join(__dirname, "./util/getUser.js"));
-        this.getSong = require(path.join(__dirname, "./util/getSong.js"));
+        this.renderHelp = reload(path.join(__dirname, "./util/renderHelp.js"));
+        this.getImage = reload(path.join(__dirname, "./util/getImage.js"));
+        this.getUser = reload(path.join(__dirname, "./util/getUser.js"));
+        this.getSong = reload(path.join(__dirname, "./util/getSong.js"));
+        this.createPlayer = reload(path.join(__dirname, "./util/createPlayer.js"))
         this.wait = (ms,fn)=>{let id=setInterval(()=>{clearInterval(id);fn();},ms)};
     }
 }

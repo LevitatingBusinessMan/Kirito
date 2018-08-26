@@ -17,8 +17,9 @@ class Reload {
     }
     async run(Kirito, args, message, alias, prefix, chn) {
         Kirito.commands = {};
-        Kirito.log('info','Performing command reload')
+        Kirito.log('info','Performing command reload');
         let result = Kirito.loadCommands();
+        Kirito.loadUtilities();
         let msg = `Loaded \`${result.success}/${result.total}\` commands\n`;
         if (result.failedFiles.length) {
             msg += `Failed: ${result.failedFiles.join(', ')}`;
