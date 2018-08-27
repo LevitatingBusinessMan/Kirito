@@ -1,5 +1,5 @@
 module.exports = {
-    "prefix": "r!",
+    "prefix": "k!",
     "admins": [],
     "token": "",
     "log": true,
@@ -8,7 +8,8 @@ module.exports = {
     "logChannel": false, //Channel ID
     "raven": false,
     "lavaLinkNode": false, 
-    //Example: {"host": "localhost", "port": 80, "region": "eu", "password": "youshallnotpass" }
+    //Example: {"host": "localhost", "port": 80, "region": "eu", "password": "youshallnotpass"}
+    "lavaRestTimeout": 10000,
 
     "keys": {
     }

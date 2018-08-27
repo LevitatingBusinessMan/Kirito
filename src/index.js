@@ -69,10 +69,6 @@ class Kirito extends Discord.Client {
 
             let afterLogin = () => {
                 this.config.token = null;
-
-                //Set up Raven
-                if (this.config.raven)
-                    this.Raven = require("raven").config(this.config.raven).install();
                 
                 //Set LavaLink Manager
                 if (this.config.lavaLinkNode) {
@@ -86,13 +82,17 @@ class Kirito extends Discord.Client {
                     //Axios instance for LavaLink Rest API
                     this.lavaRest = (id) => {
                         return this.axios({
-                            timeout: 5000,
+                            timeout: this.config.lavaRestTimeout,
                             url: `http://${this.config.lavaLinkNode.host}:2333/loadtracks`,
                             headers: {"Authorization": this.config.lavaLinkNode.password},
                             params: {"identifier":id}
                         });
                     }
                 }
+
+                //Set up Raven
+                if (this.config.raven)
+                    this.Raven = require("raven").config(this.config.raven).install();
             }
 
             //Logging in

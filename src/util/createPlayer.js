@@ -40,23 +40,19 @@ module.exports = function createPlayer(guildID, vChannelID, ogChannelID) {
     });
     player.on("end", data => {
         if (data.reason === "REPLACED") return;
+        if (player.loop)
+            player.queue.push(player.nowPlaying);
+
         if (player.queue.length) {          
             player.play(player.queue[0].track);
             player.sendMessage(player.queue[0]);
             player.nowPlaying = player.queue[0];
 
-            if (!player.loop)
-                player.queue.shift();
-            else player.queue.push(player.queue.shift());
+            player.queue.shift();
         } else {
-            //Queue empty, but loop enabled
-            if (player.loop) {
-                player.play(player.nowPlaying.track);
-                player.sendMessage(player.nowPlaying);
-                return;
-            }
             manager.leave(guildID)
             manager.players.delete(guildID);
+            console.log(manager.players.has(guildID))
         }
     });
     manager.players.set(guildID, player);
