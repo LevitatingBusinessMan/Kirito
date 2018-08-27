@@ -29,7 +29,8 @@ When argument \`-sc\` is used Kirito will search Soundcloud
     async run(Kirito, args, message, alias, prefix, chn) {
         if (!message.member.voiceChannel)
         return message.respond(":x: You are not in a voice channel!");
-
+    
+        message.channel.startTyping();
         Kirito.getSong(message, args)
         .catch(e => {
             Kirito.log('err',e);
@@ -37,40 +38,40 @@ When argument \`-sc\` is used Kirito will search Soundcloud
                 Kirito.Raven.captureException(e);
             message.respond(":x: Oops! An error occured")
         }).then(track => {
-        if (!track)
-            return message.respond(":x: Failed loading track");
-            
-        if (!Kirito.manager.players.has(message.guild.id))
-            var player = Kirito.createPlayer(message.guild.id, message.member.voiceChannel.id, message.channel.id);
-        else
-            var player = Kirito.manager.players.get(message.guild.id);
-        if (!player)
-            return message.respond(":x: Missing permissions!");
+            if (!track)
+                return message.respond(":x: Failed loading track");
+                
+            if (!Kirito.manager.players.has(message.guild.id))
+                var player = Kirito.createPlayer(message.guild.id, message.member.voiceChannel.id, message.channel.id);
+            else
+                var player = Kirito.manager.players.get(message.guild.id);
+            if (!player)
+                return message.respond(":x: Missing permissions!");
 
-        //Playlist
-        if (track instanceof Array) {
-            let tracks = track;
-            tracks.forEach(track => {
+            //Playlist
+            if (track instanceof Array) {
+                let tracks = track;
+                tracks.forEach(track => {
+                    track.author = message.author.tag;
+                    track.authorAvatar = message.author.avatarURL;
+                    track.timestamp = new Date();
+                });
+
+                player.queue = tracks.concat(player.queue);
+                if (!player.track)
+                    player.emit('end',"START_QUEUE");
+            }
+            //Single track
+            else {
                 track.author = message.author.tag;
                 track.authorAvatar = message.author.avatarURL;
                 track.timestamp = new Date();
-            });
 
-            player.queue = tracks.concat(player.queue);
-            if (!player.track)
-                player.emit('end',"START_QUEUE");
-        }
-        //Single track
-        else {
-            track.author = message.author.tag;
-            track.authorAvatar = message.author.avatarURL;
-            track.timestamp = new Date();
-
-            player.queue.unshift(track);
-            if (!player.track)
-                player.emit('end',"START_QUEUE");
-            else message.respond(`Next song: \`${track.info.title}\``)
-        }
+                player.queue.unshift(track);
+                if (!player.track)
+                    player.emit('end',"START_QUEUE");
+                else message.respond(`Next song: \`${track.info.title}\``)
+            }
         });
     }
 }
