@@ -69,8 +69,8 @@ When argument \`-sc\` is used Kirito will search Soundcloud
                 track.timestamp = new Date();
 
                 player.play(track.track);
-                player.sendMessage(track);
                 player.nowPlaying = track;
+                player.sendMessage(track);
             }
         });
     }

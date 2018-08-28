@@ -11,6 +11,7 @@ class Command {
             "guildOnly": false,
             "ownerOnly": false,
             "expectedArgs": false,
+            "sameVC": false,
             "nsfw": false,
             "requires": []
         }

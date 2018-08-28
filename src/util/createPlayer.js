@@ -24,22 +24,41 @@ module.exports = function createPlayer(guildID, vChannelID, ogChannelID) {
                 this.guilds_.set(g.id,g);
             }
         } else var channel = this.channels.get(ogChannelID);
-        let embed = new this.Discord.RichEmbed()
-        .setAuthor(track.info.author)
-        .setTitle(track.info.title)
-        .setURL(track.info.uri)
-        .setColor(0x0066ff)
-        .setFooter(track.author,track.authorAvatar)
-        .setTimestamp(track.timestamp);
-        channel.send(embed)
+
+        channel.send(player.createEmbed(false))
     }
+    player.createEmbed = (showProgress, time) => {
+        let {nowPlaying,state,paused} = player;
+        if (time) state.position = time;
+        let embed = new this.Discord.RichEmbed()
+        .setAuthor(nowPlaying.info.author)
+        .setTitle(nowPlaying.info.title)
+        .setURL(nowPlaying.info.uri)
+        .setColor(0x0066ff)
+        .setFooter(nowPlaying.author,nowPlaying.authorAvatar)
+        .setTimestamp(nowPlaying.timestamp);
+
+        if (showProgress) {
+            const dayjs = require("dayjs");
+            let timeSpent = dayjs(state.position).format("m:ss");
+            let timeLength = nowPlaying.info.isStream ?"∞":dayjs(nowPlaying.info.length).format("m:ss");
+            let progress = nowPlaying.info.isStream ?1:state.position/nowPlaying.info.length;
+            let progressBarLength = 20;
+            let progressBar = "─".repeat(progress*progressBarLength) + (paused?":pause_button:":":white_circle:") + "─".repeat(progressBarLength - progress*progressBarLength);
+            embed.setDescription(`[${timeSpent}]${progressBar}[${timeLength}]`);
+        }
+        return embed;
+    } 
     player.on("error", err => {
         if (this.config.raven)
             this.Raven.captureException(err);
         this.logger.error(err);
+        manager.leave(guildID)
+        manager.players.delete(guildID);
     });
     player.on("end", data => {
         if (data.reason === "REPLACED") return;
+        if (data.reason === "STOPPED") return;
         if (player.loop)
             player.queue.push(player.nowPlaying);
 
@@ -52,8 +71,11 @@ module.exports = function createPlayer(guildID, vChannelID, ogChannelID) {
         } else {
             manager.leave(guildID)
             manager.players.delete(guildID);
-            console.log(manager.players.has(guildID))
         }
+    });
+    player.on("disconnect", msg => {
+        manager.leave(guildID)
+        manager.players.delete(guildID);
     });
     manager.players.set(guildID, player);
     return player;

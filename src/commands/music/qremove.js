@@ -11,6 +11,7 @@ class Qremove {
             "guildOnly": true,
             "ownerOnly": false,
             "expectedArgs": "int",
+            "sameVC": true,
             "nsfw": false,
             "requires": []
         }

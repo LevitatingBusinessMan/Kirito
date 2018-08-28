@@ -11,14 +11,12 @@ class Move {
             "guildOnly": true,
             "ownerOnly": false,
             "expectedArgs": false,
+            "sameVC": false,
             "nsfw": false,
             "requires": []
         }
     }
     async run(Kirito, args, message, alias, prefix, chn) {
-        if (!message.member.voiceChannel)
-            return message.respond(":x: You are not in a voice channel!");
-
         if (Kirito.manager.players.has(message.guild.id)) {
             let channelID = message.member.voiceChannel.id;
 
@@ -28,7 +26,6 @@ class Move {
             
             let player = Kirito.manager.players.get(message.guild.id);
             player.switchChannel(channelID, true);
-
         } else message.respond("There is no player active!!");
     }
 }

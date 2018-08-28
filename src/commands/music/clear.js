@@ -10,7 +10,8 @@ class Clear {
             "perms": [],
             "guildOnly": true,
             "ownerOnly": false,
-            "expectedArgs": "",
+            "expectedArgs": false,
+            "sameVC": true,
             "nsfw": false,
             "requires": []
         }

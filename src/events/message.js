@@ -50,10 +50,16 @@ module.exports = async function message (Kirito, [message]) {
                 //No send_messages permission
                 if (!message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES"))
                     return message.author.send('I am not authorized to speak in that channel, sorry!');
+                
+                //SameVC
+                if (Kirito.manager.players.has(message.guild.id) && message.member.voiceChannel && command.conf.sameVC)
+                    if (message.member.voiceChannel.id !== message.guild.me.voiceChannel.id)
+                        return message.channel.send(sameVC);
             }
             
             //Match args with expected
             if (command.conf.expectedArgs.length) {
+                //Old STR/INT system
                 let expectedArgs = command.conf.expectedArgs.split(/\s/g);
                 for (let i = 0; i < expectedArgs.length; i++) {
                     if (!args[i])
@@ -76,6 +82,13 @@ module.exports = async function message (Kirito, [message]) {
                             return message.channel.send(invalidArgs.replace('%s',args.join(', ')), Kirito.renderHelp(command))
                     }
                 }
+            }
+            //Regex system
+            else if (typeof command.conf.expectedArgs === "object") {
+                if (!args.length)
+                    return message.channel.send(missingArgs, Kirito.renderHelp(command));
+                if (!command.conf.expectedArgs.test(args.join(' ')))
+                    return message.channel.send(invalidArgs.replace('%s',args.join(', ')), Kirito.renderHelp(command))
             }
 
             //Ensure user is in DB
@@ -113,5 +126,6 @@ adminOnly = ":x: This command is for administrators of Kirito only",
 invalidArgs = ":x: The arguments `%s` are invalid for this command. Take a look at this commands help:",
 missingArgs = ":x: Missing arguments. Take a look at this commands help:",
 disabled = ":x: This command has been disabled",
+sameVC = ":x: You are not in the same voice channel!",
 nsfw = ":x: This channel isn't nsfw!"
 errorMessage = ":x: Oops! An error occured";

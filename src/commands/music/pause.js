@@ -11,6 +11,7 @@ class Pause {
             "guildOnly": true,
             "ownerOnly": false,
             "expectedArgs": false,
+            "sameVC": true,
             "nsfw": false,
             "requires": []
         }

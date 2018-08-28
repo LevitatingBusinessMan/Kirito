@@ -92,6 +92,15 @@ module.exports = async function(message, args) {
                     for (let i = 0; i < data.tracks.length && i < 10; i++) {
                         const {info} = data.tracks[i];
                         let title = info.title.length > 70 ? info.title.substring(0,67)+"...":info.title;
+                        
+                        //Stupid markdown
+/*                         if (title.split(/\*\/).length % 2)
+                            title = title.replace(/\*\/,"");
+                        if (title.split(/_/).length % 2)
+                            title = title.replace(/_/,"");
+                        if (title.split(/-/).length % 2)
+                            title = title.replace(/-/,""); */
+                        
                         msg += `\`${i+1}\` ${title}\n`;
                     }
                     msg += "**Cancel with** `c`";
