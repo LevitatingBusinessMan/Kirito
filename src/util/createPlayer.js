@@ -64,8 +64,8 @@ module.exports = function createPlayer(guildID, vChannelID, ogChannelID) {
 
         if (player.queue.length) {          
             player.play(player.queue[0].track);
-            player.sendMessage(player.queue[0]);
             player.nowPlaying = player.queue[0];
+            player.sendMessage(player.queue[0]);
 
             player.queue.shift();
         } else {
