@@ -21,8 +21,9 @@ class Showlog {
         const fs = require('fs');
         const path = require('path');
         let file = fs.readFileSync(path.join(Kirito.rootDir, "log", Kirito.logger.logFile)).toString();
-
-        message.respond(`\`\`\`ini\n${file}\`\`\``);
+        
+        file = file.substring(file.length - 1990);
+        message.respond(`\`\`\`ini\n${file}\`\`\``).then(msg => msg.destruct());
     }
 }
 
