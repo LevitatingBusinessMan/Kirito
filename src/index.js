@@ -42,8 +42,9 @@ class Kirito extends Discord.Client {
             const enmap = require("enmap");
             const enmap_level = require("enmap-level");
 
-            this.users_ = new enmap({provider: new enmap_level({name:"users"})});
-            this.guilds_ = new enmap({provider: new enmap_level({name:"guilds"})});
+            let dataDir = path.join(__dirname, "../data");
+            this.users_ = new enmap({provider: new enmap_level({name:"users",dataDir})});
+            this.guilds_ = new enmap({provider: new enmap_level({name:"guilds",dataDir})});
             //this.stats = new enmap({provider: new enmap_level({name:"stats",dataDir})});
 
             let usersDraft = new spinner(this.logger.parse("info","Loading users from DB %s"), 300,);
