@@ -34,8 +34,8 @@ module.exports = async function message (Kirito, [message]) {
             if (!message.guild && command.conf.guildOnly)
                 return message.channel.send(guildOnly);
 
-            //Admin catagory
-            if (command.catagory == 'admin' && !Kirito.config.admins.includes(message.author.id))
+            //Admin category
+            if (command.category == 'admin' && !Kirito.config.admins.includes(message.author.id))
                 return message.channel.send(adminOnly);
 
             //Required permissions
