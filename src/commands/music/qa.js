@@ -31,7 +31,6 @@ When argument \`-sc\` is used Kirito will search Soundcloud
         if (!message.member.voiceChannel)
         return message.respond(":x: You are not in a voice channel!");
 
-        message.channel.startTyping();
         Kirito.getSong(message, args)
         .catch(e => {
             Kirito.log('err',e);
