@@ -53,6 +53,11 @@ class Kirito extends Discord.Client {
             this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
             this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
             
+            if (this.config.express) {
+                this.server = await require(path.join(__dirname, "./util/api.js"))
+                this.logger.info('API on > http://localhost:80')
+            }
+
             //Events and Commands
             this.loadCommands();
             this.loadEvents();

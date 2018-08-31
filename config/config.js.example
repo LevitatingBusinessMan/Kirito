@@ -10,6 +10,7 @@ module.exports = {
     "lavaLinkNode": false, 
     //Example: {"host": "localhost", "port": 80, "region": "eu", "password": "youshallnotpass"}
     "lavaRestTimeout": 10000,
+    "express": false,
 
     "keys": {
     }
