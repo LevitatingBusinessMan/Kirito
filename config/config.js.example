@@ -2,6 +2,7 @@ module.exports = {
     "prefix": "k!",
     "admins": [],
     "token": "",
+    "client_secret": "UPTbGlvhus-PFYSyHVd6dUYlikaOsB3_",
     "log": true,
     "private": true,
     "show_disabled": false,

@@ -52,11 +52,6 @@ class Kirito extends Discord.Client {
 
             this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
             this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
-            
-            if (this.config.express) {
-                this.server = await require(path.join(__dirname, "./util/api.js"))
-                this.logger.info('API on > http://localhost:80')
-            }
 
             //Events and Commands
             this.loadCommands();
@@ -73,7 +68,7 @@ class Kirito extends Discord.Client {
             this.axios.defaults.headers.common["User-Agent"] = `Kirito/${this.pjson.version} (nodeJS)`;
             this.axios.defaults.timeout = 5000;
 
-            let afterLogin = () => {
+            let afterLogin = async () => {
                 this.config.token = null;
                 
                 //Set LavaLink Manager
@@ -99,6 +94,12 @@ class Kirito extends Discord.Client {
                 //Set up Raven
                 if (this.config.raven)
                     this.Raven = require("raven").config(this.config.raven).install();
+
+                //Launch express
+                if (this.config.express) {
+                    this.server = await (require(path.join(__dirname, "./util/api.js")))(this);
+                    this.logger.info('API on > http://localhost:80');
+                }
             }
 
             //Logging in
