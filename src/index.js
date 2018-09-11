@@ -98,7 +98,7 @@ class Kirito extends Discord.Client {
                 //Launch express
                 if (this.config.express) {
                     this.server = await (require(path.join(__dirname, "./util/api.js")))(this);
-                    this.logger.info('API on > http://localhost:80');
+                    this.logger.info("API on > http://localhost:3000");
                 }
             }
 

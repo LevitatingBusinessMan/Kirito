@@ -9,8 +9,13 @@ module.exports = function ready (Kirito) {
     console.log(red("prefix: ") + green(Kirito.config.prefix));
 
     //Check if guilds missing in DB
+    let count = 0;
     Kirito.guilds.forEach(guild => {
-        if (!Kirito.guilds_.has(guild.id))
+        if (!Kirito.guilds_.has(guild.id)) {
+            count++;
             Kirito.guilds_.set(guild.id,Kirito.guildEntry(guild));
+        }
     });
+    if (count)
+        Kirito.logger.info(`Added ${count} guilds to DB`)
 }

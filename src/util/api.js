@@ -36,7 +36,7 @@ module.exports = (Kirito) => new Promise((resolve,reject) => {
 
         switch(name) {
             case "prefix":
-                guild.prefix = JSON.parse(value);
+                guild.prefix = JSON.parse(decodeURI(value)) ;
                 Kirito.guilds_.set(guild.id,guild)
                 res.send({status:"OK", message:"Setting saved"})
                 break;
