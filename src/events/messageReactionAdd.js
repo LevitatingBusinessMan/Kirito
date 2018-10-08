@@ -23,7 +23,7 @@ module.exports = async function messageReactionAdd (Kirito, [messageReaction, us
     if (isDestructor(messageReaction, user)) {
         messageReaction.message.delete();
         let ogMessage = await messageReaction.message.channel.fetchMessage(messageReaction.message.ogMessageID)
-        if (ogMessage)
+        if (ogMessage && ogMessage.guild)
             ogMessage.delete();
 
         Kirito.savedMessages.delete(messageReaction.message.id)
