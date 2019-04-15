@@ -30,7 +30,8 @@ class Queue {
                     let msg = `\nAnd ${queue.length - list.length} more...`;
                     list = list.join("\n").substring(0, 2048-msg.length) + msg;
                 } else list = list.join("\n");
-                message.respond(new Kirito.Discord.RichEmbed().setTitle(loop?'Queue :repeat:':'Queue').setDescription(list));
+                message.respond(new Kirito.Discord.RichEmbed().setTitle(loop?'Queue :repeat:':'Queue').setDescription(list))
+                    .then(msg => msg.destruct())
             }
         } else message.respond("There is no active queue!");
     }
