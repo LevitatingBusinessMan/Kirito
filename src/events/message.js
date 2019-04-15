@@ -52,8 +52,8 @@ module.exports = async function message (Kirito, [message]) {
                     return message.author.send('I am not authorized to speak in that channel, sorry!');
                 
                 //SameVC
-                if (Kirito.manager.players.has(message.guild.id) && message.member.voiceChannel && command.conf.sameVC)
-                    if (message.member.voiceChannel.id !== message.guild.me.voiceChannel.id)
+                if (Kirito.config.lavaLinkNode && message.member.voiceChannel && command.conf.sameVC)
+                    if (Kirito.manager.players.has(message.guild.id) && message.member.voiceChannel.id !== message.guild.me.voiceChannel.id )
                         return message.channel.send(sameVC);
             }
             
