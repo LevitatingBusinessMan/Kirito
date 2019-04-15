@@ -12,7 +12,7 @@ For users:
 \`[prefix]iam -iamnot <role>\` to remove a role to yourself
 
 For moderators:
-\`[prefix]iam -add <role>\` to add a role to the servers autoroles, if two roles with that name exist. I will ask for the ID
+\`[prefix]iam -add <role>\` to add a role to the servers autoroles
 \`[prefix]iam -remove <role>\` to remove a role to the servers autoroles
 
 `,
