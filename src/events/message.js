@@ -1,5 +1,16 @@
 module.exports = async function message (Kirito, [message]) {
-    
+
+    //We don't respond to bots
+    if (message.author.bot)
+        return;
+
+    //Automatic tableflip feature
+    if (message.guild && message.content.includes('(╯°□°）╯︵ ┻━┻'))
+        if (Kirito.guilds_.get(message.guild.id).autoflip) {
+        let count = message.content.split('(╯°□°）╯︵ ┻━┻').length -1;
+        message.channel.send(('┬─┬ ノ( ゜-゜ノ) \n').repeat(count));
+    }
+
     let prefix;
     if (!message.guild)
         prefix = Kirito.config.prefix;
@@ -7,8 +18,6 @@ module.exports = async function message (Kirito, [message]) {
         prefix = Kirito.guilds_.get(message.guild.id).prefix || Kirito.config.prefix;
     
     if (message.content.startsWith(prefix) || message.content.startsWith(`<@${Kirito.user.id}>`)) {
-        if (message.author.bot)
-            return;
 
         let messageExPrefix;
         if (message.content.startsWith(prefix))

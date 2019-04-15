@@ -223,6 +223,7 @@ class Kirito extends Discord.Client {
             id: guild.id,
             name: guild.name,
             autoroles: [],
+            autoflip: false,
             greeting: null,
             farewell: null,
             messageChannel: null,

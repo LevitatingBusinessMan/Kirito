@@ -22,7 +22,7 @@ For moderators:
             "disabled": false,
             "aliases": ["autorole", "role"],
             "perms": [],
-            "guildOnly": false,
+            "guildOnly": true,
             "ownerOnly": false,
             "expectedArgs": false,
             "sameVC": false,
