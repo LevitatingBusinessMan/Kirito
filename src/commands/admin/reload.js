@@ -25,11 +25,10 @@ class Reload {
             msg += `Failed: ${result.failedFiles.join(', ')}`;
         }
 
-        message.respond({embed:{
-            title: 'Command reload',
-            description: msg,
-            color: result.failedFiles.length?0xff0000:0x00ff00
-        }});
+        message.respond(new Kirito.Discord.RichEmbed()
+        .setTitle("Command reload")
+        .setDescription(msg)
+        .setColor(result.failedFiles.length ? "RED" : "GREEN"))
     }
 }
 
