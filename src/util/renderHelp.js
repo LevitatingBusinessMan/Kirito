@@ -46,7 +46,11 @@ module.exports = function (command, prefix) {
         .setTitle(this.user.username)
         .setThumbnail(this.user.avatarURL);
         for (var category in categories){
-            embed.addField(category, categories[category].join(', '));
+            let list = categories[category].join(', ');
+            
+            //Make sure list isn't empty
+            if (list.length)
+                embed.addField(category, categories[category].join(', '));
         }
         
         embed.withoutAdmin = function() {
