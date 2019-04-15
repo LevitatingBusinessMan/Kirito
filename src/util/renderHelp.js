@@ -8,8 +8,8 @@ module.exports = function (command, prefix) {
 
         let embed = new this.Discord.RichEmbed()
         .setTitle(command.name.capitalize())
-        .setDescription(command.help.description.replace('[prefix]', prefix))
-        .addField("Usage:",command.help.usage.replace('[prefix]', prefix));
+        .setDescription(command.help.description.replace(/\[prefix\]/g, prefix))
+        .addField("Usage:",command.help.usage.replace(/\[prefix\]/g, prefix));
         
         if (command.conf.ownerOnly)
             embed.setTitle(command.name.capitalize() + " [Owner only]")
