@@ -9,11 +9,11 @@ Autoroles are roles users can assign to themselves.
 
 For users:
 \`[prefix]iam <role>\` to add a role to yourself
-\`[prefix]iam -iamnot <role>\` to remove a role to yourself
+\`[prefix]iam -iamnot (or -remove) <role>\` to remove a role to yourself
 
 For moderators:
 \`[prefix]iam -add <role>\` to add a role to the servers autoroles
-\`[prefix]iam -remove <role>\` to remove a role to the servers autoroles
+\`[prefix]iam -delete <role>\` to remove a role to the servers autoroles
 
 `,
             "usage": "[prefix]iam gay"
@@ -42,12 +42,12 @@ For moderators:
         if (args.length) {
             
             //Add or remove role from user
-            if (!["-add", "-remove"].includes(args[0])) {
+            if (!["-add", "-delete"].includes(args[0])) {
 
                 //No autoroles? Return
                 if (!guild.autoroles.length) return message.respond("This guild has no autoroles set");
 
-                const iamnot = (args[0] == "-iamnot");
+                const iamnot = (args[0] == "-iamnot" || args[0] == "-remove");
 
                 if (iamnot && !args[1])
                     return message.respond("Missing role name!");
