@@ -23,6 +23,7 @@
     "draftlog": "^1.0.12",
     "enmap": "3.1.x",
     "enmap-level": "^2.1.0",
+    "enmap-rethink": "LevitatingBusinessMan/enmap-rethink",
     "express": "^4.16.3",
     "pm2": "^3.0.3",
     "raven": "^2.6.3",

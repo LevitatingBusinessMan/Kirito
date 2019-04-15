@@ -12,7 +12,13 @@ module.exports = {
     //Example: {"host": "localhost", "port": 80, "region": "eu", "password": "youshallnotpass"}
     "lavaRestTimeout": 10000,
     "express": false,
-
+    "db": "level", //enmap3 type, enmap-level (leveldb) or enmap-rethink (rethinkdb)
+    "rethink": { //Only for Rethink based DB
+        dbName: 'Kirito',
+        host: 'localhost',
+        port: 28015
+    },
+    
     "keys": {
     }
 };

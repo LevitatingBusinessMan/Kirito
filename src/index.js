@@ -40,18 +40,43 @@ class Kirito extends Discord.Client {
 
             //Enmap
             const enmap = require("enmap");
-            const enmap_level = require("enmap-level");
+            if (this.config.db === "rethink") {
 
-            let dataDir = path.join(__dirname, "../data");
-            this.users_ = new enmap({provider: new enmap_level({name:"users",dataDir})});
-            this.guilds_ = new enmap({provider: new enmap_level({name:"guilds",dataDir})});
-            //this.stats = new enmap({provider: new enmap_level({name:"stats",dataDir})});
+                const enmap_rethink = require("enmap-rethink");
 
-            let usersDraft = new spinner(this.logger.parse("info","Loading users from DB %s"), 300,);
-            let guildsDraft = new spinner(this.logger.parse("info","Loading guilds from DB %s"), 300,);
+                this.users_ = new enmap({provider: new enmap_rethink(Object.assign({name:"users"}, this.config.rethink))});
+                this.guilds_ = new enmap({provider: new enmap_rethink(Object.assign({name:"guilds"}, this.config.rethink))});
+    
+                let usersDraft = new spinner(this.logger.parse("info","Loading users from DB %s"), 300,);
+                let guildsDraft = new spinner(this.logger.parse("info","Loading guilds from DB %s"), 300,);
+    
+                this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
+                this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
 
-            this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
-            this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
+            }
+
+            else if (this.config.db === "level") {
+
+                const enmap_level = require("enmap-level");
+
+                let dataDir = path.join(__dirname, "../data");
+                this.users_ = new enmap({provider: new enmap_level({name:"users",dataDir})});
+                this.guilds_ = new enmap({provider: new enmap_level({name:"guilds",dataDir})});
+    
+                let usersDraft = new spinner(this.logger.parse("info","Loading users from DB %s"), 300,);
+                let guildsDraft = new spinner(this.logger.parse("info","Loading guilds from DB %s"), 300,);
+    
+                this.users_.defer.then(() => usersDraft.stop(this.logger.parse('info',`Users loaded: ${this.users_.size}`)));
+                this.guilds_.defer.then(() => guildsDraft.stop(this.logger.parse('info',`Guilds loaded: ${this.guilds_.size}`)));
+
+            }
+
+            else {
+                this.logger.log("ERR", "Invalid DB option. Valid options: level & rethink");
+                process.exit();
+            }
+
+
 
             //Events and Commands
             this.loadCommands();
