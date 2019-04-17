@@ -9,10 +9,10 @@ To send wormhole messages:
 [prefix]wh send <message>
 
 To receive wormhole messages:
-[prefix]wh -open <channel>
+[prefix]wh open <channel>
 
 To stop receiving wormhole messages:
-[prefix]wh -close <channel>
+[prefix]wh close <channel>
 `,
             "usage": "[prefix]wh send My name is Jeff!"
         }
@@ -64,7 +64,7 @@ To stop receiving wormhole messages:
         }
 
         //Open
-        else if (args[0] === "-open") {
+        else if (args[0] === "open") {
             if (message.member.hasPermission("MANAGE_GUILD")) {
                 let channel = args[1];
                 if (!args[1])
@@ -112,7 +112,7 @@ To stop receiving wormhole messages:
         }
 
         //Close
-        else if (args[0] === "-close") {
+        else if (args[0] === "close") {
             let guild = Kirito.guilds_.get(message.guild.id);
             if (message.member.hasPermission("MANAGE_GUILD")) {
                 if (!Kirito.channels.has(guild.wormholeChannel))
