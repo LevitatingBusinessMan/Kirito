@@ -71,6 +71,10 @@ When argument \`-sc\` is used Kirito will search Soundcloud
                 player.nowPlaying = track;
                 player.sendMessage(track);
             }
+
+            if (player.paused)
+                player.paused = false;
+
         });
     }
 }
