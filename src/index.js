@@ -24,6 +24,9 @@ class Kirito extends Discord.Client {
             else this.logger = new (require(path.join(__dirname, "./util/logger.js")))();
             this.log = this.logger.log.bind(this.logger);
 
+            if (this.debug)
+                this.log("info", "Starting in Debug (dev) mode")
+
             //Process events
             process.on('exit', code => {
                 this.logger.log('err', `Process exited with code ${code}`);
@@ -85,6 +88,27 @@ class Kirito extends Discord.Client {
             //Events and Commands
             this.loadCommands();
             this.loadEvents();
+
+            //Sadly the recursive option doesn't work on linux (watching subdirectories)
+            if (this.debug) {
+                fs.readdirSync(path.join(__dirname, './commands')).forEach(category => {
+                    let last = null;
+
+                    //filename is not always supplied here, which is why we reload ALL commands.
+                    //For instance when new file could is created, but fsWatch doesn't supply a filename we can't load it.
+                    fs.watch(path.join(__dirname, './commands', category), (event, filename) => {
+                        
+                        //Sometimes the listener gets called multiple times, we fix this by wating at least 2 seconds between each reload.
+                        if (last + 2*1000 > new Date().getTime())
+                            return;
+
+                        this.log("info",`Noticed change in file: ${filename ? filename : "uknown file"}`)
+                        this.loadCommands();
+                        last = new Date().getTime();
+                    })
+                })
+                this.log("info", "Change listener for commands active");
+            }
 
             //Disable commands with missing keys
             require(path.join(__dirname,'./util/keyCheck'))(this);
