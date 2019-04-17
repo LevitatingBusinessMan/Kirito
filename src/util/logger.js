@@ -76,7 +76,7 @@ class Logger {
     */
     error(err) {
         this.checkDate();
-        console.error(`${red(`[ERROR ${dayjs().format("HH:mm:ss")}]`)}: ${err.message + (err.stack ? "\n"+err.stack.split('\n').splice(1).join('\n'):"")}\n`);
+        console.error(`[${red(`ERROR ${dayjs().format("HH:mm:ss")}`)}]: ${err.message + (err.stack ? "\n"+err.stack.split('\n').splice(1).join('\n'):"")}\n`);
     }
 }
 
