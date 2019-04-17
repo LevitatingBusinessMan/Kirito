@@ -60,6 +60,10 @@ class Kirito extends Discord.Client {
                 const enmap_level = require("enmap-level");
 
                 let dataDir = path.join(__dirname, "../data");
+
+                if (!fs.existsSync(dataDir))
+                    fs.mkdirSync(dataDir)
+
                 this.users_ = new enmap({provider: new enmap_level({name:"users",dataDir})});
                 this.guilds_ = new enmap({provider: new enmap_level({name:"guilds",dataDir})});
     
