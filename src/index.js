@@ -13,6 +13,7 @@ class Kirito extends Discord.Client {
         this.Discord = Discord;
         this.rootDir = path.join(__dirname, "..");
         this.debug = process.argv.includes('-debug');
+        this.dev = process.argv.includes('-dev');
 
         require(path.join(__dirname, "./util/prototypes.js"));
 
@@ -25,7 +26,10 @@ class Kirito extends Discord.Client {
             this.log = this.logger.log.bind(this.logger);
 
             if (this.debug)
-                this.log("info", "Starting in Debug (dev) mode")
+                this.log("info", "Starting in debug mode")
+
+            if (this.dev)
+                this.log("info", "Starting in dev mode")
 
             //Process events
             process.on('exit', code => {
@@ -90,7 +94,7 @@ class Kirito extends Discord.Client {
             this.loadEvents();
 
             //Sadly the recursive option doesn't work on linux (watching subdirectories)
-            if (this.debug) {
+            if (this.dev) {
                 fs.readdirSync(path.join(__dirname, './commands')).forEach(category => {
                     let last = null;
 
