@@ -31,6 +31,9 @@ To change channel: \`[prefix]greeting -channel <channel>\``,
             if (message.member.hasPermission("MANAGE_GUILD")) {
                 //Change channel
                 if (args[0] === "-channel") {
+                    if (!message.guild.me.permissionsIn(args[1].replace(/<|#|>/g,"")).has("SEND_MESSAGES"))
+                        return  message.respond(`I don't have the permission to speak in <#${args[1].replace(/<|#|>/g,"")}>`);
+
                     if (Kirito.channels.get(args[1].replace(/<|#|>/g,""))) {
                         guild.messageChannel = args[1].replace(/<|#|>/g,"");
                         Kirito.guilds_.set(guild.id,guild);
