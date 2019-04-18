@@ -25,7 +25,7 @@ class Seek {
             if (time > player.nowPlaying.info.length)
                 return message.respond("The song is not that long!");
             player.seek(time);
-            message.respond({embed:player.createEmbed(true),time});
+            message.respond({embed:player.createEmbed(true, time)});
         } else message.respond("There is no player active!!");
     }
 }
