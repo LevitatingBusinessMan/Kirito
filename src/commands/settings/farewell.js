@@ -10,7 +10,8 @@ Placeholders:
 \`%mention%\`: mention (@kirito#0001)
 \`%server%:\` Name of server
 
-To disable: \`[prefix]farewell -remove\``,
+To disable: \`[prefix]farewell -remove\`
+To change channel: \`[prefix]farewell -channel <channel>\``,
             "usage": "[prefix]farewell Bye bye %user%!"
         }
         this.conf = {
