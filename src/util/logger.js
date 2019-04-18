@@ -5,7 +5,7 @@ const path = require("path");
 const readline = require('readline');
 
 class Logger {
-    constructor(logDirectory) {
+    constructor(logDirectory, max_logs) {
         this.log_ = "";
         this.logFile = dayjs().format("(YY-M-D) HH[h]-mm[m]-ss[s]") + ".log";
         this.lastLogTime = new Date();
@@ -15,13 +15,13 @@ class Logger {
                 fs.mkdirSync(logDirectory);
 
             let prevLogs = fs.readdirSync(logDirectory);
-            if (prevLogs.length > 9)
+            if (prevLogs.length > max_logs-1 && max_logs)
                 fs.unlink(path.join(logDirectory,prevLogs[0]), (e)=>{});
 
             let chars = /((\[)\d*m)|(\[[0-9][A-Z])|(\d)/g;
             let fileStream = fs.createWriteStream(path.join(logDirectory, this.logFile), {flag: "w"});
             let writeToStdOut = process.stdout.write.bind(process.stdout);
-            process.stdout.write = process.stderr.write= d => {fileStream.write(d.toString().replace(chars,''));writeToStdOut(d);}
+            process.stdout.write = process.stderr.write = d => {fileStream.write(d.toString().replace(chars,''));writeToStdOut(d);}
         }
     }
 

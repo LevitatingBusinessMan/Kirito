@@ -21,7 +21,7 @@ class Kirito extends Discord.Client {
             this.config = require(path.join(__dirname, "../config/config.js"));
 
             if (this.config.log)
-                this.logger = new (require(path.join(__dirname, "./util/logger.js")))(path.join(__dirname, "../log"));
+                this.logger = new (require(path.join(__dirname, "./util/logger.js")))(path.join(__dirname, "../log"), this.config.max_logs);
             else this.logger = new (require(path.join(__dirname, "./util/logger.js")))();
             this.log = this.logger.log.bind(this.logger);
 

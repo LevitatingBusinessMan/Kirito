@@ -4,6 +4,7 @@ module.exports = {
     "token": "",
     "client_secret": "",
     "log": true,
+    "max_logs": 10, //Maximum amount of log files, false = infinite
     "private": true,
     "show_disabled": false,
     "logChannel": false, //Channel ID
