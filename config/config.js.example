@@ -20,5 +20,6 @@ module.exports = {
     },
     
     "keys": {
+        googleGeoAPIkey: false,
     }
 };
