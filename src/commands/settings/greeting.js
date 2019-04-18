@@ -11,7 +11,7 @@ Placeholders:
 \`%server%:\` Name of server
 
 To disable: \`[prefix]greeting -remove\`
-To change channel: \`[prefix]greeting -channel <channel>\```,
+To change channel: \`[prefix]greeting -channel <channel>\``,
             "usage": "[prefix]greeting Welcome %user%!"
         }
         this.conf = {
