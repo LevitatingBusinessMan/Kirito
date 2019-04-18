@@ -14,7 +14,7 @@ module.exports = function createPlayer(guildID, vChannelID, ogChannelID) {
     player.nowPlaying = null;
     player.ogChannelID = ogChannelID;
     player.sendMessage = track => {
-        let {musicChannel,bigPlayCards} = this.guilds_.get(guildID);
+        let {musicChannel} = this.guilds_.get(guildID);
         if (musicChannel) {
             if (this.channels.has(musicChannel))
                 var channel = this.channels.get(musicChannel);
