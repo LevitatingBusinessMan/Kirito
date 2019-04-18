@@ -4,23 +4,24 @@ module.exports = {
     "token": "",
     "client_secret": "",
     "log": true,
-    "max_logs": 10, //Maximum amount of log files, false = infinite
+    "max_logs": 10,
     "private": true,
     "show_disabled": false,
-    "logChannel": false, //Channel ID
+    "logChannel": false,
     "raven": false,
     "lavaLinkNode": false, 
-    //Example: {"host": "localhost", "port": 2333, "region": "eu", "password": "youshallnotpass"}
+    //Example lavaLinkNode: {"host": "localhost", "port": 2333, "region": "eu", "password": "youshallnotpass"}
     "lavaRestTimeout": 10000,
     "express": false,
-    "db": "level", //enmap3 type, enmap-level (leveldb) or enmap-rethink (rethinkdb)
+    "db": "level", //enmap3 provider type, enmap-level (leveldb) or enmap-rethink (rethinkdb)
     "rethink": { //Only for Rethink based DB
-        dbName: 'Kirito',
-        host: 'localhost',
-        port: 28015
+        "dbName": 'Kirito',
+        "host": 'localhost',
+        "port": 28015
     },
-    
+
     "keys": {
-        googleGeoAPIkey: false,
+        "googleGeoAPIkey": false,
+        "DarkSkyAPIKey": false
     }
 };
