@@ -29,7 +29,7 @@ class Help {
                         similiarCommands.push(result.target)
                 }
                 if (similiarCommands.length)
-                    message.respond(`Command \`${args[0]}\` not found.\n Similar commands: \`${similiarCommands.join(', ')}\``);
+                    message.respond(`Command \`${args[0]}\` not found.\nSimilar commands: \`${similiarCommands.join(', ')}\``);
                 else message.respond(`Command \`${args[0]}\` not found.`)
             }
         }
