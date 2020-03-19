@@ -18,7 +18,7 @@ When argument \`-sc\` is used Kirito will search Soundcloud
         }
         this.conf = {
             "disabled": false,
-            "aliases": [],
+            "aliases": ["p"],
             "perms": [],
             "guildOnly": true,
             "ownerOnly": false,
