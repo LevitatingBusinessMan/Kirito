@@ -31,7 +31,7 @@ module.exports = async function (type, author, receiver) {
             break;
         case "kiss":
             var color =  0xe60073;
-            var verb = "hugged";
+            var verb = "kissed";
             var api = RemAPI;
             break;
         case "lick":
