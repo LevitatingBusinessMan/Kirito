@@ -20,9 +20,9 @@ class Eval {
             const {inspect} = require('util');
             
             let output = await eval(`(async () => {${toEval.includes("return")?'':"return"} ${toEval}})()`);
-            var msg = await message.respond(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${inspect(output).substr(0,1900)}\`\`\``);
+            var msg = await message.respond(`Input:\`\`\`JS\n${toEval}\`\`\` Output \`\`\`JS\n${inspect(output).substr(0,1900)}\`\`\``);
         } catch(e) {
-            var msg = await message.respond(`Input:\`\`\`${toEval}\`\`\` Output \`\`\`${e.message}\`\`\``);
+            var msg = await message.respond(`Input:\`\`\`JS\n${toEval}\`\`\` Output \`\`\`JS\n${e.message}\`\`\``);
             if (Kirito.debug)
                 Kirito.logger.error(e);
         }
