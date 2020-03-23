@@ -17,13 +17,13 @@ module.exports = async function message (Kirito, [message]) {
     else
         prefix = Kirito.guilds_.get(message.guild.id).prefix || Kirito.config.prefix;
     
-    if (message.content.startsWith(prefix) || message.content.startsWith(`<@${Kirito.user.id}>`)) {
+    if (message.content.startsWith(prefix) || message.content.startsWith(`<@!${Kirito.user.id}>`)) {
 
         let messageExPrefix;
         if (message.content.startsWith(prefix))
             messageExPrefix = message.content.substr(prefix.length);
-        if (message.content.startsWith(`<@${Kirito.user.id}>`))
-            messageExPrefix = message.content.substr(`<@${Kirito.user.id}>`.length);
+        if (message.content.startsWith(`<@!${Kirito.user.id}>`))
+            messageExPrefix = message.content.substr(`<@!${Kirito.user.id}>`.length);
         
         const args = messageExPrefix.trim().split(/\s/g).map(x => x.trim()).filter(x => x.length);
 
