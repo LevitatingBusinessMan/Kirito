@@ -1,4 +1,3 @@
-console.log('\033[2J');
 const Discord = require('discord.js');
 const path = require('path');
 const fs = require('fs');
@@ -115,7 +114,7 @@ class Kirito extends Discord.Client {
             }
 
             //Disable commands with missing keys
-            require(path.join(__dirname,'./util/keyCheck'))(this);
+            require(path.join(__dirname,'./util/keyCheck'));
 
             //Package JSON
             this.pjson = require((path.join(__dirname,'../package.json')));
@@ -154,7 +153,7 @@ class Kirito extends Discord.Client {
 
                 //Launch express
                 if (this.config.express) {
-                    this.server = await (require(path.join(__dirname, "./util/api.js")))(this);
+                    this.server = await (require(path.join(__dirname, "./util/api.js")));
                     this.logger.info("API on > http://localhost:3000");
                 }
             }
@@ -275,4 +274,4 @@ class Kirito extends Discord.Client {
     }
 }
 
-new Kirito({disableEveryone: true});
+module.exports = new Kirito({disableEveryone: true});

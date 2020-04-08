@@ -1,3 +1,5 @@
+const Kirito = require("../index")
+
 module.exports = function(Kirito) {
     for (var keyName in Kirito.config.keys) {
         let key = Kirito.config.keys[keyName];

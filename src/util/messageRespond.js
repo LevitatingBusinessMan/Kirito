@@ -1,4 +1,5 @@
-const path = require('path');
+const addEmojiConfirm = require("./addEmojiConfirm");
+const addDestructor = require("./addDestructor");
 
 module.exports = Kirito => {
     return async function (content, options) {
@@ -8,8 +9,8 @@ module.exports = Kirito => {
         message.ogAuthorID = this.author.id;
         message.ogMessageID = this.id;
 
-        message.confirm = require(path.join(__dirname,'./addEmojiConfirm'))(Kirito);
-        message.destruct = require(path.join(__dirname,'./addDestructor'))(Kirito);
+        message.confirm = addEmojiConfirm;
+        message.destruct = addDestructor;
 
         return message;
     }

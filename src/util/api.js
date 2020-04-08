@@ -1,5 +1,8 @@
+
+const Kirito = require("../index")
+
 //Dashboard API
-module.exports = (Kirito) => new Promise((resolve,reject) => {
+module.exports = new Promise((resolve,reject) => {
     const express = require('express');
     const basicAuth = require('basic-auth-connect');
     const app = express();
