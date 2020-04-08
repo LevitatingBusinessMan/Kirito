@@ -92,7 +92,7 @@ class Uinfo {
 			true
 		)
 		.addField(
-			"Joined Discord:",
+			"Joined guild:",
 			dayjs(member.joinedAt).format("D/M/YY"),
 			true
 		)
