@@ -8,7 +8,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "debug": "node src/index.js -debug",
+    "debug": "node src/index.js -debug -dev",
     "dev": "node src/index.js -dev"
   },
   "keywords": [],

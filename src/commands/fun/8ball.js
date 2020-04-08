@@ -16,7 +16,8 @@ class Eightball {
             "requires": []
         }
     }
-    async run(Kirito, args, message, alias, prefix, chn) {
+	
+	run(Kirito, args, message, alias, prefix, chn) {
 		const answers = [
 			"as I see it, yes",
 			"ask again later",
@@ -36,9 +37,7 @@ class Eightball {
 			"only you can tell"
 		]
 
-		const answer = answers[Math.floor(Math.random() * answers.length)+1]
-
-		message.respond(`:8ball:: ${answer}`)
+		message.respond(`:8ball:: ${answers.random()}`)
 
     }
 }

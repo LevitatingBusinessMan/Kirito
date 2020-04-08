@@ -187,7 +187,7 @@ class Kirito extends Discord.Client {
                 }
 
                 command.category = category;
-                command.name = command.constructor.name.toLowerCase();
+                command.name = file.split(".")[0];
                 
                 if (!this.config.lavaLinkNode && category === "music")
                     command.conf.disabled = true;

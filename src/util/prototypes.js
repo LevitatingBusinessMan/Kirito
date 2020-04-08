@@ -1,3 +1,7 @@
+Array.prototype.random = function() {
+    return this[Math.floor(Math.random() * this.length)]
+}
+
 Array.prototype.remove = function(value) {
     let i = this.indexOf(value);
     if (i < 0)
