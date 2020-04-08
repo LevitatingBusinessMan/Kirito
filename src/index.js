@@ -44,6 +44,10 @@ class Kirito extends Discord.Client {
 
             const spinner = require(path.join(__dirname, "./util/spinner.js"));
 
+            //Database entries
+            this.userEntry = require(path.join(__dirname, "./db/user.js"))
+            this.guildEntry = require(path.join(__dirname, "./db/guild.js"))
+
             //Enmap
             const enmap = require("enmap");
             if (this.config.db === "rethink") {
@@ -236,31 +240,6 @@ class Kirito extends Discord.Client {
             "success": count-failed,
             "total": count,
             failedFiles
-        }
-    }
-
-    userEntry(user) {
-        return {
-            id: user.id,
-            name: user.username,
-            bio: false,
-            whMessages: [],
-            points: 0
-        }
-    }
-
-    guildEntry(guild) {
-        return {
-            id: guild.id,
-            name: guild.name,
-            autoroles: [],
-            autoflip: false,
-            greeting: null,
-            farewell: null,
-            messageChannel: null,
-            wormholeChannel: null,
-            musicChannel: null,
-            prefix: null
         }
     }
 
