@@ -1,7 +1,7 @@
 module.exports = async function voiceStateUpdate (Kirito, [oldMember,newMember]) {
     if (!Kirito.config.lavaLinkNode)
         return;
-    Kirito.wait(30000, () => {
+    setTimeout(() => {
         if (Kirito.manager.players.has(oldMember.guild.id)) {
             let player = Kirito.manager.players.get(oldMember.guild.id);
             let channel = Kirito.channels.get(player.channel);
@@ -10,5 +10,5 @@ module.exports = async function voiceStateUpdate (Kirito, [oldMember,newMember])
                 Kirito.manager.players.delete(oldMember.guild.id);
             }
         }
-    });
+    }, 30000);
 }

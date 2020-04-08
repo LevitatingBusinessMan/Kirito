@@ -270,7 +270,6 @@ class Kirito extends Discord.Client {
         this.getUser = reload(path.join(__dirname, "./util/getUser.js"));
         this.getSong = reload(path.join(__dirname, "./util/getSong.js"));
         this.createPlayer = reload(path.join(__dirname, "./util/createPlayer.js"))
-        this.wait = (ms,fn)=>{let id=setInterval(()=>{clearInterval(id);fn();},ms)};
     }
 }
 

@@ -16,13 +16,13 @@ module.exports = function() {
     }
     
     //Timeout
-    Kirito.wait(15000, () => {
+    setTimeout(() => {
         if (Kirito.savedMessages.has(this.id)) {
             if (Kirito.savedMessages.get(this.id).message.denyFN)
                 Kirito.savedMessages.get(this.id).message.denyFN(Kirito.savedMessages.get(this.id));
             Kirito.savedMessages.delete(this.id);
         }
-    })
+    }, 15000)
 
     this.accept = accept;
     this.deny = deny;

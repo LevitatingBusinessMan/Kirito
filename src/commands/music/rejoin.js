@@ -28,12 +28,12 @@ class Rejoin {
 
             player = Kirito.createPlayer(id,channel,ogChannelID);
             
-            Kirito.wait(100, () => {
+            setTimeout(() => {
                 player.play(track);
                 player.seek(state.position);
                 player.nowPlaying = nowPlaying;
                 player.queue = queue;
-            });
+            }, 100);
 
             (await msg).edit({embed:{title:"State: Rejoined!",color:0x00ff00}}); 
         } else message.respond("There is no active player!");
