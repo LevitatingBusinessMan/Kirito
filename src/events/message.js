@@ -109,7 +109,7 @@ module.exports = async function message (Kirito, [message]) {
             if (Kirito.commandAliases[commandName])
                 alias = commandName;
 
-            message.respond = require(require('path').join(__dirname, '../util/messageRespond'))(Kirito);
+            message.respond = require(require('path').join(__dirname, '../util/messageRespond'));
 
             try {
                 await command.run(Kirito, args, message, alias, prefix, message.channel);
