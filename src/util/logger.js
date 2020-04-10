@@ -42,14 +42,14 @@ class Logger {
         let time = dayjs().format("HH:mm:ss");
         let stamp = `${type} ${time}`;
         switch (type) {
-        case "INFO":
-            stamp = green(`${type} ${time}`);
-            break;
-        case "WARN":
-            stamp = yellow(`${type} ${time}`);
-            break;
-        case "ERR":
-            stamp = red(`${type} ${time}`);
+            case "INFO":
+                stamp = green(`${type} ${time}`);
+                break;
+            case "WARN":
+                stamp = yellow(`${type} ${time}`);
+                break;
+            case "ERR":
+                stamp = red(`${type} ${time}`);
         }
 
         const fileAndLine = (new Error).stack.split("\n")[2].split("(")[1].split("/").last().split(":").splice(0,2).join(":")

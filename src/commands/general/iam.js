@@ -9,7 +9,7 @@ Autoroles are roles users can assign to themselves.
 
 For users:
 \`[prefix]iam <role>\` to add a role to yourself
-\`[prefix]iam -iamnot (or -remove) <role>\` to remove a role to yourself
+\`[prefix]iamnot <role>\` to remove a role to yourself
 
 For moderators:
 \`[prefix]iam -add <role>\` to add a role to the servers autoroles
@@ -20,7 +20,7 @@ For moderators:
         }
         this.conf = {
             "disabled": false,
-            "aliases": ["autorole", "role"],
+            "aliases": ["autorole", "role", "iamnot"],
             "perms": [],
             "guildOnly": true,
             "ownerOnly": false,
@@ -37,7 +37,7 @@ For moderators:
             authority = message.member.hasPermission("MANAGE_ROLES");
 
         if (!message.guild.me.hasPermission("MANAGE_ROLES"))
-            return Subaru.respond(message, "I don't have the permission to manage roles!");
+            return message.respond("I don't have the permission to manage roles!");
 
         if (args.length) {
             
@@ -47,18 +47,21 @@ For moderators:
                 //No autoroles? Return
                 if (!guild.autoroles.length) return message.respond("This guild has no autoroles set");
 
-                const iamnot = (args[0] == "-iamnot" || args[0] == "-remove");
+                const iamnot = (["-iamnot", "-remove"].includes(args[0]) || alias == "iamnot");
 
-                if (iamnot && !args[1])
+                //If flag is used the role is in the second arg
+                const roleName = ["-iamnot", "-remove"].includes(args[0]) ? args[1] : args[0]
+
+                if (!roleName)
                     return message.respond("Missing role name!");
                 
-                const role = message.guild.roles.find(r => r.name == (iamnot ? args[1] : args[0]));
+                const role = message.guild.roles.find(r => r.name == roleName);
 
-                if (!guild.autoroles.includes(iamnot ? args[1] : args[0]))
+                if (!guild.autoroles.includes(roleName))
                     return message.respond("That role is not an autorole");
                 
                 if (!role) {
-                    guild.autoroles.remove(iamnot ? args[1] : args[0]);
+                    guild.autoroles.remove(roleName);
                     Kirito.guilds_.set(guild.id, guild);
                     return message.respond("That role doesn't exist anymore. Removing it from autoroles...");
                 }

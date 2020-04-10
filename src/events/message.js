@@ -114,7 +114,7 @@ module.exports = async function message (Kirito, [message]) {
             try {
                 await command.run(Kirito, args, message, alias, prefix, message.channel);
             } catch(e) {
-                Kirito.log('err', e.stack);
+                Kirito.logger.error(e);
                 if (Kirito.Raven)
                     Kirito.Raven.captureException(e);
                 message.channel.send(errorMessage);
