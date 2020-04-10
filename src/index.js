@@ -90,8 +90,6 @@ class Kirito extends Discord.Client {
                 process.exit();
             }
 
-
-
             //Events and Commands
             this.loadCommands();
             this.loadEvents();

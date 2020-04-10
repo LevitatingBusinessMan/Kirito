@@ -2,7 +2,6 @@ const {green, yellow, red} = require("chalk");
 const dayjs = require("dayjs");
 const fs = require("fs");
 const path = require("path");
-const readline = require('readline');
 
 class Logger {
     constructor(logDirectory, max_logs) {
@@ -53,7 +52,13 @@ class Logger {
             stamp = red(`${type} ${time}`);
         }
 
-        return `[${stamp}] ${msg}`;
+        const fileAndLine = (new Error).stack.split("\n")[2].split("(")[1].split("/").last().split(":").splice(0,2).join(":")
+
+        if (type == "ERR" || type == "WARN")
+            return `[${stamp}] ${msg} (${fileAndLine})`;   
+        else
+            return `[${stamp}] ${msg}`;
+            
     }
 
     //Shortcuts
@@ -62,11 +67,11 @@ class Logger {
     }
 
     warn(msg) {
-        this.log("INFO",msg)
+        this.log("WARN",msg)
     }
 
     err(msg) {
-        this.log("INFO",msg)
+        this.log("ERR",msg)
     }
 
     /*
@@ -76,7 +81,32 @@ class Logger {
     */
     error(err) {
         this.checkDate();
-        console.error(`[${red(`ERROR ${dayjs().format("HH:mm:ss")}`)}]: ${err.message + (err.stack ? "\n"+err.stack.split('\n').splice(1).join('\n'):"")}\n`);
+
+        let message
+        let trace
+
+        //Error provided
+        if (err instanceof Error) {
+            if (!err.message)
+                err.message = "No message"
+            
+            message = err.message
+            trace = err.stack
+        
+        }
+        
+        //Only error message provided
+        else {
+            trace = (new Error()).stack
+            if (typeof err == "object")
+                err = JSON.stringify(err)
+            message = err ? err : "No message"
+        }
+
+        //remove first line from trace
+        trace = trace.split("\n").splice(1).join("\n")
+
+        console.error(`[${red(`ERROR ${dayjs().format("HH:mm:ss")}`)}]: ${message}\n ${trace}`);
     }
 }
 
