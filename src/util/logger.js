@@ -52,10 +52,18 @@ class Logger {
                 stamp = red(`${type} ${time}`);
         }
 
-        const fileAndLine = (new Error).stack.split("\n")[2].split("(")[1].split("/").last().split(":").splice(0,2).join(":")
+        if (type == "ERR" || type == "WARN") {
 
-        if (type == "ERR" || type == "WARN")
+            //With erros and warning we log the file and linenumber
+            let lineIndex = 3
+            if ((new Error).stack.split("\n")[3].includes("Logger"))
+                lineIndex = 4
+            if ((new Error).stack.split("\n")[lineIndex].includes("anonymous"))
+                fileAndLine = "anonymous"
+            const fileAndLine = (new Error).stack.split("\n")[lineIndex].split("(")[1].split("/").last().split(":").splice(0,2).join(":")
+
             return `[${stamp}] ${msg} (${fileAndLine})`;   
+        }
         else
             return `[${stamp}] ${msg}`;
             

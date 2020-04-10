@@ -9,11 +9,11 @@ Autoroles are roles users can assign to themselves.
 
 For users:
 \`[prefix]iam <role>\` to add a role to yourself
-\`[prefix]iamnot <role>\` to remove a role to yourself
+\`[prefix]iamnot <role>\` to remove a role from yourself
 
 For moderators:
 \`[prefix]iam -add <role>\` to add a role to the servers autoroles
-\`[prefix]iam -delete <role>\` to remove a role to the servers autoroles
+\`[prefix]iam -delete <role>\` to remove a role from the servers autoroles
 
 `,
             "usage": "[prefix]iam gay"
