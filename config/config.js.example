@@ -22,6 +22,7 @@ module.exports = {
 
     "keys": {
         "googleGeoAPIkey": false,
-        "DarkSkyAPIKey": false
+        "DarkSkyAPIKey": false,
+        "CatAPIkey": false
     }
 };

@@ -1,13 +1,14 @@
-//In the future these might have to be replace with axios instances (authorization etc)
-const RemAPI = "https://rra.ram.moe/i/r?type=%s";
-const CFsAPI = "https://api.computerfreaker.cf/v1/%s";
-
 /**
  * @param {String} type The requested image type
  * @param {GuildMember} author
  * @param {String} receiver Mention, id or username
  */
 module.exports = async function (type, author, receiver) {
+    //In the future these might have to be replace with axios instances (authorization etc)
+    const RemAPI = "https://rra.ram.moe/i/r?type=%s";
+    const CFsAPI = "https://api.computerfreaker.cf/v1/%s";
+    const CatAPI = `https://api.thecatapi.com/v1/images/search?api_key=${this.config.keys.CatAPIkey}`;
+
     switch (type){
         case "slap":
             var color = 0xff0000;
@@ -60,9 +61,13 @@ module.exports = async function (type, author, receiver) {
             var api = RemAPI;
         case "hentai":
             var api = CFsAPI;
+        case "cat":
+            var api = CatAPI;
     }
     
     let {data} = await this.axios(api.replace("%s",type));
+
+    console.log(data)
 
     switch (api) {
         case RemAPI:
@@ -70,6 +75,9 @@ module.exports = async function (type, author, receiver) {
             break;
         case CFsAPI:
             var image = data.url;
+            break;
+        case CatAPI:
+            var image = data[0].url;
     }
     
     let embed = new this.Discord.RichEmbed()

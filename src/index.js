@@ -116,7 +116,7 @@ class Kirito extends Discord.Client {
             }
 
             //Disable commands with missing keys
-            require(path.join(__dirname,'./util/keyCheck'));
+            require(path.join(__dirname,'./util/keyCheck'))(this);
 
             //Package JSON
             this.pjson = require((path.join(__dirname,'../package.json')));
