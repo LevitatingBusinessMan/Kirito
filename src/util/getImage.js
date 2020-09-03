@@ -55,19 +55,14 @@ module.exports = async function (type, author, receiver) {
             var verb = null;
             var api = RemAPI;
             break;
-        case "tickle":
-            var color = 0x0099ff;
-            var verb = "tickled";
-            var api = RemAPI;
         case "hentai":
             var api = CFsAPI;
+            break;
         case "cat":
             var api = CatAPI;
     }
     
     let {data} = await this.axios(api.replace("%s",type));
-
-    console.log(data)
 
     switch (api) {
         case RemAPI:
