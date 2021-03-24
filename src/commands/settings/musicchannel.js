@@ -1,4 +1,4 @@
-class MusicChannel {
+class Musicchannel {
     constructor() {
         this.help = {
             "description":
@@ -7,15 +7,15 @@ Change the servers music text channel.
 If this is set, all automatically played songs will be logged in that channel.
 If this is not, the channel the first music command was made in will be used.
 
-[prefix]musicChannel <channel>, to define a channel
-[prefix]musicChannel -remove, to remove this channel again
+[prefix]musicchannel <channel>, to define a channel
+[prefix]musicchannel -remove, to remove this channel again
 
 `,
-            "usage": "[prefix]musicChannel <channel>"
+            "usage": "[prefix]musicchannel <channel>"
         }
         this.conf = {
             "disabled": false,
-            "aliases": [],
+            "aliases": ["music_channel", "mchannel"],
             "perms": [],
             "guildOnly": false,
             "ownerOnly": false,
@@ -49,4 +49,4 @@ If this is not, the channel the first music command was made in will be used.
     }
 }
 
-module.exports = MusicChannel;
+module.exports = Musicchannel;
